@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     // Email content
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "andrew.chen.mail.ac@gmail.com",
+      to: "anuj@acuberentals",
       replyTo: email,
       subject: "New Appraisal Request",
       html: `
