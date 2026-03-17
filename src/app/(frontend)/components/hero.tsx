@@ -42,15 +42,15 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center">
         <div className="mb-6">
-          <span className="text-lg lg:text-xl text-white font-medium tracking-wide">
+          <span className="text-lg lg:text-xl text-white font-bold tracking-wide">
             Road To
           </span>
         </div>
         {/* Main Headline */}
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-4 tracking-tight">
-          <span className="text-white">0%</span> Property
+          <span className="text-red">0%</span> Property
           <br />
-          Management Fees
+          Management Fees*
         </h1>
 
         <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">

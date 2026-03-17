@@ -21,7 +21,7 @@ const footerLinks = {
       name: "Available Rentals",
       href: "https://www.facebook.com/acuberentalsltd/",
     },
-    { name: "Apply", href: "mailto:anuj@acuberentals.co.nz" },
+    { name: "Apply", href: "mailto:anuj@acuberentals.com" },
   ],
   company: [
     { name: "About Us", href: "/placeholder" },
@@ -72,11 +72,11 @@ export function Footer() {
                 +64 22 453 0098
               </a>
               <a
-                href="mailto:anuj@acuberentals.co.nz"
+                href="mailto:anuj@acuberentals.com"
                 className="flex items-center gap-3 text-white text-sm hover:underline transition-colors"
               >
                 <Mail className="h-4 w-4" />
-                anuj@acuberentals.co.nz
+                anuj@acuberentals.com
               </a>
             </div>
 

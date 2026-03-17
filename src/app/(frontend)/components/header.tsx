@@ -8,7 +8,11 @@ import { Menu, X, Phone, ChevronDown } from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "For Tenants", href: "https://www.facebook.com/acuberentalsltd/" },
+  {
+    name: "For Tenants",
+    href: "https://www.facebook.com/acuberentalsltd/",
+    target: "_blank",
+  },
   { name: "For Landlords", href: "#landlords" },
   { name: "Our Team", href: "/placeholder" },
 ];
@@ -30,6 +34,8 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
+              target={item.target}
+              rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
               className="text-sm font-medium text-black hover:underline transition-colors"
             >
               {item.name}
@@ -66,6 +72,10 @@ export function Header() {
               <div key={item.name}>
                 <Link
                   href={item.href}
+                  target={item.target}
+                  rel={
+                    item.target === "_blank" ? "noopener noreferrer" : undefined
+                  }
                   className="block py-2 text-base font-medium text-black hover:text-black transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
