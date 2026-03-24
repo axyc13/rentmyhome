@@ -80,9 +80,6 @@ export function Appraisal() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Content */}
             <div>
-              <span className="text-white/80 font-medium text-sm uppercase tracking-wider">
-                For Landlords
-              </span>
               <h2 className="text-3xl lg:text-5xl font-serif font-bold text-white mt-3 mb-6">
                 Get Your Free
                 <br />
@@ -140,9 +137,6 @@ export function Appraisal() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
           <div>
-            <span className="text-white/80 font-medium text-sm uppercase tracking-wider">
-              For Landlords
-            </span>
             <h2 className="text-3xl lg:text-5xl font-serif font-bold text-white mt-3 mb-6">
               Get Your Free
               <br />

@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ReviewCard } from "./reviewCard";
+import { ReviewCard } from "./ReviewCard";
+import Link from "next/link";
 
 interface Review {
   id: number;
@@ -16,7 +16,6 @@ export function Reviews() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -97,9 +96,6 @@ export function Reviews() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
-            <span className="text-primary font-medium text-sm uppercase tracking-wider">
-              Testimonials
-            </span>
             <h2 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mt-3 mb-4">
               What Our Clients Say
             </h2>
@@ -112,23 +108,24 @@ export function Reviews() {
 
         {/* Reviews Carousel */}
         <div className="relative">
-          <div className="overflow-hidden">
-            <div className="grid lg:grid-cols-3 gap-6">
-              {(showAll ? reviews : reviews.slice(0, 3)).map((review) => (
-                <ReviewCard key={review.id} review={review} />
-              ))}
-            </div>
-            {reviews.length > 3 && (
-              <div className="text-center mt-6">
-                <button
-                  className="text-primary underline text-sm"
-                  onClick={() => setShowAll((prev) => !prev)}
-                >
-                  {showAll ? "Show fewer reviews" : "Show more reviews"}
-                </button>
-              </div>
-            )}
+          <div className="hidden lg:flex overflow-x-auto gap-6 pb-4 scrollbar-hide">
+            {reviews.map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
           </div>
+          <div className="lg:hidden flex flex-col items-center justify-center gap-6 pb-4 scrollbar-hide">
+            {reviews.map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center justify-center w-full mt-8 hover:cursor-pointer hover:underline">
+          <Link
+            target="_blank"
+            href="https://www.google.com/maps/place/Rent+My+Home+(A+Cube+Rentals+Ltd)+-+Residential+Property+Management/@-36.8792352,174.7758868,17.76z/data=!4m8!3m7!1s0x6d0d4da3579c05cf:0xfac8890e0cc4c1a6!8m2!3d-36.8791947!4d174.7760694!9m1!1b1!16s%2Fg%2F11khsq2cb6?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D"
+          >
+            See more reviews
+          </Link>
         </div>
       </div>
     </section>

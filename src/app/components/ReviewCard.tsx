@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Star, Quote } from "lucide-react";
-import "../global.css";
+import "@/src/app/(frontend)/global.css";
 
 interface Review {
   id: number;
@@ -18,9 +18,8 @@ export function ReviewCard({ review }: { review: Review }) {
 
   return (
     <div
-      className={`bg-white rounded-2xl p-8 border transition-all duration-500 overflow-auto opacity-100 scale-100 ${expanded ? "h-full" : "h-[54vh]"}`}
+      className={`bg-white rounded-2xl p-8 border transition-all duration-500 opacity-100 scale-100 w-80 lg:w-88 shrink-0 ${expanded ? "h-full" : "h-112"}`}
     >
-      {" "}
       <Quote className="h-10 w-10 text-red mb-4" />
       {/* Stars */}
       <div className="flex items-center gap-1 mb-4">

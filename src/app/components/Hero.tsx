@@ -42,7 +42,7 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center">
         <div className="mb-6">
-          <span className="text-lg lg:text-xl text-white font-bold tracking-wide">
+          <span className="text-lg lg:text-2xl text-white font-bold tracking-wide">
             Road To
           </span>
         </div>
@@ -54,8 +54,8 @@ export function Hero() {
         </h1>
 
         <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Expert property management that puts landlords and tenants first.
-          Experience the journey to hassle-free property ownership.
+          Exclusive and customised services that put landlords and tenants
+          first. Experience the journey to hassle-free property management.
         </p>
 
         {/* CTA Buttons */}
@@ -63,6 +63,13 @@ export function Hero() {
           <Link
             className="flex flex-row text-white hover:bg-[#ad0000] text-lg group px-6 py-4 rounded-lg border-2 gap-1"
             href="#landlords"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById("landlords");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
           >
             <p>I&apos;m a Landlord</p>
             <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />

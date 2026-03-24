@@ -20,8 +20,9 @@ const footerLinks = {
     {
       name: "Available Rentals",
       href: "https://www.facebook.com/acuberentalsltd/",
+      target: "_blank",
     },
-    { name: "Apply", href: "mailto:anuj@acuberentals.com" },
+    { name: "Apply", href: "#tenancy" },
   ],
   company: [
     { name: "About Us", href: "/placeholder" },
@@ -118,12 +119,34 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.tenants.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-white text-sm hover:underline transition-colors"
-                  >
-                    {link.name}
-                  </Link>
+                  {link.target === "_blank" ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white text-sm hover:underline transition-colors"
+                    >
+                      {link.name}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="text-white text-sm hover:underline transition-colors"
+                      onClick={(e) => {
+                        if (link.href.startsWith("#")) {
+                          e.preventDefault();
+                          const element = document.getElementById(
+                            link.href.slice(1),
+                          );
+                          if (element) {
+                            element.scrollIntoView({ behavior: "smooth" });
+                          }
+                        }
+                      }}
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

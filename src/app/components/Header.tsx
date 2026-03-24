@@ -10,8 +10,7 @@ const navigation = [
   { name: "Home", href: "/" },
   {
     name: "For Tenants",
-    href: "https://www.facebook.com/acuberentalsltd/",
-    target: "_blank",
+    href: "#tenancy",
   },
   { name: "For Landlords", href: "#landlords" },
   { name: "Our Team", href: "/placeholder" },
@@ -25,7 +24,7 @@ export function Header() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <Image src={logo} alt="logo" />
+          <Image src={logo} alt="logo" className="w-30" />
         </Link>
 
         {/* Desktop Navigation */}
@@ -34,9 +33,16 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
-              target={item.target}
-              rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
               className="text-sm font-medium text-black hover:underline transition-colors"
+              onClick={(e) => {
+                if (item.href.startsWith("#")) {
+                  e.preventDefault();
+                  const element = document.getElementById(item.href.slice(1));
+                  if (element) {
+                    element.scrollIntoView({ behavior: "smooth" });
+                  }
+                }
+              }}
             >
               {item.name}
             </Link>
@@ -72,12 +78,19 @@ export function Header() {
               <div key={item.name}>
                 <Link
                   href={item.href}
-                  target={item.target}
-                  rel={
-                    item.target === "_blank" ? "noopener noreferrer" : undefined
-                  }
                   className="block py-2 text-base font-medium text-black hover:text-black transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    setMobileMenuOpen(false);
+                    if (item.href.startsWith("#")) {
+                      e.preventDefault();
+                      const element = document.getElementById(
+                        item.href.slice(1),
+                      );
+                      if (element) {
+                        element.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }
+                  }}
                 >
                   {item.name}
                 </Link>
