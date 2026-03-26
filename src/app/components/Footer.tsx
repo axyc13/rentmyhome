@@ -35,12 +35,12 @@ const socialLinks = [
   {
     name: "Facebook",
     icon: Facebook,
-    href: "https://www.facebook.com/acuberentalsltd/",
+    href: "https://www.facebook.com/rentmyhomeltd",
   },
   {
     name: "Instagram",
     icon: Instagram,
-    href: "https://www.instagram.com/rent_myhome_nz/",
+    href: "https://www.instagram.com/rentmyhome_acuberentals?igsh=cGJzMXJ2dXJnbnpj",
   },
   {
     name: "LinkedIn",
@@ -73,11 +73,11 @@ export function Footer() {
                 +64 22 453 0098
               </a>
               <a
-                href="mailto:anuj@acuberentals.com"
+                href="mailto:receptionauckland@rentmyhome.co.nz"
                 className="flex items-center gap-3 text-white text-sm hover:underline transition-colors"
               >
                 <Mail className="h-4 w-4" />
-                anuj@acuberentals.com
+                receptionauckland@rentmyhome.co.nz
               </a>
             </div>
 

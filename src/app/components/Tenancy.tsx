@@ -334,7 +334,7 @@ export function Tenancy() {
             target="_blank"
             className=" text-white px-6 py-3 hover:underline mt-16"
           >
-            See Available Houses
+            See Available Rentals
           </a>
         </div>
       </div>

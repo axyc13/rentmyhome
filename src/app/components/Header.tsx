@@ -53,7 +53,7 @@ export function Header() {
         <div className="hidden lg:flex lg:items-center lg:gap-4">
           <a className="flex items-center gap-2 text-sm text-black hover:underline transition-colors">
             <Phone className="h-4 w-4" />
-            <span>+64 22 453 0098</span>
+            <span>+64 22 543 4533</span>
           </a>
         </div>
 

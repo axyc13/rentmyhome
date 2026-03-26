@@ -439,6 +439,11 @@ export function Appraisal() {
             )}
           </div>
         </div>
+        <div className="text-center mt-16">
+          <a className=" text-white px-6 py-3 hover:underline mt-16">
+            *What is Road to 0%?
+          </a>
+        </div>
       </div>
     </section>
   );
