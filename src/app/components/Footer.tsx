@@ -14,12 +14,12 @@ import {
 const footerLinks = {
   landlords: [
     { name: "Rent Appraisal", href: "#landlords" },
-    { name: "Why Choose Us", href: "/placeholder" },
+    { name: "Why Choose Us", href: "/landlords" },
   ],
   tenants: [
     {
       name: "Available Rentals",
-      href: "https://www.facebook.com/acuberentalsltd/",
+      href: "https://www.facebook.com/rentmyhomeltd",
       target: "_blank",
     },
     { name: "Apply", href: "#tenancy" },

@@ -14,8 +14,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Video Background Placeholder with Road Animation */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div
           className="absolute inset-0 bg-linear-to-br from-[#1b1b1b] via-black/55 to-[#ad0000]/80"
@@ -62,29 +61,20 @@ export function Hero() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
           <Link
             className="flex flex-row text-white hover:bg-[#ad0000] text-lg group px-6 py-4 rounded-lg border-2 gap-1"
-            href="#landlords"
-            onClick={(e) => {
-              e.preventDefault();
-              const element = document.getElementById("landlords");
-              if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
+            href="/landlords"
           >
             <p>I&apos;m a Landlord</p>
             <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
             className="flex flex-row text-white hover:bg-[#ad0000] text-lg group px-6 py-4 rounded-lg border-2 gap-1"
-            href="https://www.facebook.com/acuberentalsltd/"
+            href="https://www.facebook.com/rentmyhomeltd"
             target="_blank"
           >
             <p>I&apos;m a Tenant</p>
             <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
-
-        {/* Video Play Button */}
       </div>
 
       <style jsx>{`
