@@ -17,7 +17,7 @@ export function Hero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div
-          className="absolute inset-0 bg-linear-to-br from-[#1b1b1b] via-black/55 to-[#ad0000]/80"
+          className="absolute inset-0 bg-linear-to-br from-black via-[#1b1b1b] to-[#ad0000]/20"
           style={{ transform: `translateY(${scrollY * 0.3}px)` }}
         />
         {/* Animated Road Lines */}

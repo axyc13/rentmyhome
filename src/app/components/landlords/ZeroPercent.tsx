@@ -23,7 +23,7 @@ export default function ZeroPercent() {
       </section>
 
       {/* The Offer Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-[#f9fdfe]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-24 items-center mb-16">
             <div>
@@ -41,8 +41,8 @@ export default function ZeroPercent() {
               </p>
             </div>
 
-            <div className="space-y-8">
-              <div className="rounded-2xl p-8 border">
+            <div className="">
+              <div className="p-8">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-lg bg-[#ad0000] flex items-center justify-center shrink-0">
                     <span className="text-white font-bold text-lg">1.</span>
@@ -51,14 +51,14 @@ export default function ZeroPercent() {
                     <h3 className="text-xl font-bold text-black mb-2">
                       First 5 Properties
                     </h3>
-                    <p className="text-gray-700 text-lg">
+                    <p className="text-gray-700 text-base">
                       Only 5.5% + GST management fee
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className=" rounded-2xl p-8 border">
+              <div className=" p-8 border-t">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-lg bg-red flex items-center justify-center shrink-0">
                     <span className="text-white font-bold text-lg">2.</span>
@@ -67,7 +67,7 @@ export default function ZeroPercent() {
                     <h3 className="text-xl font-bold text-black mb-2">
                       6th Property or Referrals
                     </h3>
-                    <p className="text-gray-700 text-lg">Managed for FREE</p>
+                    <p className="text-gray-700 text-base">Managed for FREE</p>
                   </div>
                 </div>
               </div>
@@ -98,7 +98,7 @@ export default function ZeroPercent() {
                     <br />
                     Real Impact.
                   </h2>
-                  <p className="text-lg text-black mb-8 leading-relaxed">
+                  <p className="text-base text-black mb-8 leading-relaxed">
                     Managing multiple properties often comes with increasing
                     overheads. Our approach flips that narrative by introducing
                     built-in savings at scale. The more you grow, the more you
@@ -109,7 +109,6 @@ export default function ZeroPercent() {
                       "Reinvest savings into new acquisitions",
                       "Upgrade existing properties",
                       "Improve tenant experience",
-                      "Strengthen long-term returns",
                     ].map((item, idx) => (
                       <div key={idx} className="flex items-center gap-3">
                         <CheckCircle2 className="w-5 h-5 text-[#ad0000] shrink-0" />
@@ -125,7 +124,7 @@ export default function ZeroPercent() {
       </section>
 
       {/* Why This Model Works */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-[#f9fdfe]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <h2 className="text-4xl lg:text-5xl font-serif font-bold text-black mb-16 text-center">
             Why This Model Works
@@ -188,7 +187,7 @@ export default function ZeroPercent() {
             ].map((service, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-xl p-8 border border-gray-200 flex items-start gap-4"
+                className="bg-white rounded-lg p-4 flex items-start gap-4"
               >
                 <div className="bg-red w-5 h-5 mt-1 rounded-2xl" />
                 <span className="text-lg text-gray-800">{service}</span>
@@ -218,14 +217,17 @@ export default function ZeroPercent() {
                 supporting investors at every stage — from first-time landlords
                 to experienced portfolio builders.
               </p>
-              <button className="bg-white text-[#ad0000] font-bold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-2">
+              <a
+                className="bg-white text-[#ad0000] font-bold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors flex items-center gap-2"
+                href="#landlords"
+              >
                 Get Started Today <ArrowRight className="w-5 h-5" />
-              </button>
+              </a>
             </div>
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-black mb-3">
+                <h3 className="text-2xl font-extrabold font-serif text-black mb-3">
                   Our Local Expertise Ensures:
                 </h3>
               </div>
@@ -249,7 +251,7 @@ export default function ZeroPercent() {
               ].map((item, idx) => (
                 <div
                   key={idx}
-                  className="bg-gray-50 rounded-lg p-6 border border-gray-200"
+                  className="bg-gray-50 rounded-lg p-4 border border-gray-200"
                 >
                   <h4 className="font-bold text-black mb-2">{item.title}</h4>
                   <p className="text-gray-700">{item.desc}</p>
