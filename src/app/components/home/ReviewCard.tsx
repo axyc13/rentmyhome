@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Star, Quote } from "lucide-react";
-import "@/src/app/(frontend)/global.css";
 
 interface Review {
   id: number;

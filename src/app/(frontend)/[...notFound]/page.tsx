@@ -1,5 +1,5 @@
-import { Header } from "@/src/app/components/Header";
-import { Footer } from "@/src/app/components/Footer";
+import { Header } from "@/src/app/components/common/Header";
+import { Footer } from "@/src/app/components/common/Footer";
 import Link from "next/link";
 
 export default async function NotFound() {

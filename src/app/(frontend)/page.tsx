@@ -1,9 +1,9 @@
-import { Header } from "../components/Header";
-import { Hero } from "../components/Hero";
-import { Appraisal } from "../components/Appraisal";
-import { Reviews } from "../components/Reviews";
-import { Tenancy } from "../components/Tenancy";
-import { Footer } from "../components/Footer";
+import { Header } from "../components/common/Header";
+import { Hero } from "../components/home/Hero";
+import { Appraisal } from "../components/common/Appraisal";
+import { Reviews } from "../components/home/Reviews";
+import { Tenancy } from "../components/home/Tenancy";
+import { Footer } from "../components/common/Footer";
 
 export default function Home() {
   return (

@@ -13,11 +13,8 @@ export async function GET() {
     }
 
     const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}`;
-    console.log("Fetching from:", url);
 
     const response = await fetch(url);
-
-    console.log("Response status:", response.status);
 
     if (!response.ok) {
       const text = await response.text();

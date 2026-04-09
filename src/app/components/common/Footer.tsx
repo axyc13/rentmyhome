@@ -1,15 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Facebook,
-  Instagram,
-  Linkedin,
-  Mail,
-  Phone,
-  MapPin,
-  ArrowRight,
-} from "lucide-react";
+import { Facebook, Instagram, Linkedin, Mail, Phone } from "lucide-react";
 
 const footerLinks = {
   landlords: [
@@ -73,11 +65,11 @@ export function Footer() {
                 +64 22 453 0098
               </a>
               <a
-                href="mailto:receptionauckland@rentmyhome.co.nz"
+                href="mailto:receptionauck@rentmyhome.co.nz"
                 className="flex items-center gap-3 text-white text-sm hover:underline transition-colors"
               >
                 <Mail className="h-4 w-4" />
-                receptionauckland@rentmyhome.co.nz
+                receptionauck@rentmyhome.co.nz
               </a>
             </div>
 
