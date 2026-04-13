@@ -98,6 +98,16 @@ export function Footer() {
                   <Link
                     href={link.href}
                     className="text-white text-sm hover:underline transition-colors"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const element = document.getElementById("landlords");
+                      if (element) {
+                        element.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                      }
+                    }}
                   >
                     {link.name}
                   </Link>

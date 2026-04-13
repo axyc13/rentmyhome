@@ -61,7 +61,14 @@ export function Hero() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
           <Link
             className="flex flex-row text-white hover:bg-[#ad0000] text-lg group px-6 py-4 rounded-lg border-2 gap-1"
-            href="/landlords"
+            href="#landlords"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById("landlords");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }}
           >
             <p>I&apos;m a Landlord</p>
             <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
