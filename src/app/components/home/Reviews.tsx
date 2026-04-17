@@ -13,7 +13,7 @@ interface Review {
   text: string;
 }
 
-const TIMER_DURATION = 5000;
+const TIMER_DURATION = 15000;
 
 export function Reviews() {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -131,26 +131,26 @@ export function Reviews() {
         {/* Carousel */}
         <div className="relative flex items-center justify-center gap-4">
           {/* Left arrow */}
-          <div
+          <button
             onClick={() => go(-1)}
             className="z-10 shrink-0 w-10 h-10 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center hover:border-black transition-colors hover:cursor-pointer"
             aria-label="Previous review"
           >
             <ChevronLeft className="h-5 w-5 text-gray-600" />
-          </div>
+          </button>
 
           {/* Cards */}
           <div className="flex items-center justify-center gap-4 w-full overflow-hidden">
             {/* Left ghost card — hidden on mobile */}
-            <button
+            <div
               onClick={() => go(-1)}
               className="hidden md:flex justify-start w-64 shrink-0 opacity-40 scale-85 transition-all duration-500"
             >
               <ReviewCard review={reviews[getIndex(-1)]} />
-            </button>
+            </div>
 
             {/* Centre card */}
-            <div className="flex justify-center shrink-0 w-full max-w-xl transition-all duration-500">
+            <div className="scale-70 lg:scale-100 flex justify-center shrink-0 w-full max-w-xl transition-all duration-500">
               <ReviewCard review={reviews[current]} />
             </div>
 
