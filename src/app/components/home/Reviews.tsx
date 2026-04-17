@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ReviewCard } from "./ReviewCard";
 import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Review {
   id: number;
@@ -12,26 +13,24 @@ interface Review {
   text: string;
 }
 
+const TIMER_DURATION = 5000;
+
 export function Reviews() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [current, setCurrent] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const response = await fetch("/api/reviews");
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch reviews");
-        }
-
+        if (!response.ok) throw new Error("Failed to fetch reviews");
         const data = await response.json();
-
-        if (data.error) {
-          throw new Error(data.error);
-        }
-
+        if (data.error) throw new Error(data.error);
         const fetchedReviews: Review[] = (data.reviews || []).map(
           (review: any, index: number) => ({
             id: index + 1,
@@ -40,7 +39,6 @@ export function Reviews() {
             text: review.text,
           }),
         );
-
         setReviews(fetchedReviews);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -48,17 +46,47 @@ export function Reviews() {
         setLoading(false);
       }
     };
-
     fetchReviews();
   }, []);
+
+  const resetTimer = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (progressRef.current) clearInterval(progressRef.current);
+    setProgress(0);
+
+    const startTime = Date.now();
+    progressRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      setProgress(Math.min((elapsed / TIMER_DURATION) * 100, 100));
+    }, 30);
+
+    intervalRef.current = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % reviews.length);
+      resetTimer();
+    }, TIMER_DURATION);
+  }, [reviews.length]);
+
+  useEffect(() => {
+    if (reviews.length > 1) resetTimer();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (progressRef.current) clearInterval(progressRef.current);
+    };
+  }, [reviews.length, resetTimer]);
+
+  const go = (dir: 1 | -1) => {
+    setCurrent((prev) => (prev + dir + reviews.length) % reviews.length);
+    resetTimer();
+  };
+
+  const getIndex = (offset: number) =>
+    (current + offset + reviews.length) % reviews.length;
 
   if (loading) {
     return (
       <section className="py-20 lg:py-28 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center">
-            <p className="text-lg">Loading reviews...</p>
-          </div>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+          <p className="text-lg">Loading reviews...</p>
         </div>
       </section>
     );
@@ -67,12 +95,8 @@ export function Reviews() {
   if (error) {
     return (
       <section className="py-20 lg:py-28 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center">
-            <p className="text-lg text-red-500">
-              Error loading reviews: {error}
-            </p>
-          </div>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+          <p className="text-lg text-red-500">Error loading reviews: {error}</p>
         </div>
       </section>
     );
@@ -81,10 +105,8 @@ export function Reviews() {
   if (reviews.length === 0) {
     return (
       <section className="py-20 lg:py-28 bg-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center">
-            <p className="text-lg">No reviews available.</p>
-          </div>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+          <p className="text-lg">No reviews available.</p>
         </div>
       </section>
     );
@@ -106,19 +128,73 @@ export function Reviews() {
           </div>
         </div>
 
-        {/* Reviews Carousel */}
-        <div className="relative">
-          <div className="hidden lg:flex overflow-x-auto gap-6 pb-4 scrollbar-hide">
-            {reviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
+        {/* Carousel */}
+        <div className="relative flex items-center justify-center gap-4">
+          {/* Left arrow */}
+          <div
+            onClick={() => go(-1)}
+            className="z-10 shrink-0 w-10 h-10 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center hover:border-black transition-colors hover:cursor-pointer"
+            aria-label="Previous review"
+          >
+            <ChevronLeft className="h-5 w-5 text-gray-600" />
           </div>
-          <div className="lg:hidden flex flex-col items-center justify-center gap-6 pb-4 scrollbar-hide">
-            {reviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
+
+          {/* Cards */}
+          <div className="flex items-center justify-center gap-4 w-full overflow-hidden">
+            {/* Left ghost card — hidden on mobile */}
+            <button
+              onClick={() => go(-1)}
+              className="hidden md:flex justify-start w-64 shrink-0 opacity-40 scale-85 transition-all duration-500"
+            >
+              <ReviewCard review={reviews[getIndex(-1)]} />
+            </button>
+
+            {/* Centre card */}
+            <div className="flex justify-center shrink-0 w-full max-w-xl transition-all duration-500">
+              <ReviewCard review={reviews[current]} />
+            </div>
+
+            {/* Right ghost card — hidden on mobile */}
+            <div
+              onClick={() => go(1)}
+              className="hidden md:flex justify-end w-64 shrink-0 opacity-40 scale-85 transition-all duration-500"
+            >
+              <ReviewCard review={reviews[getIndex(1)]} />
+            </div>
+          </div>
+
+          {/* Right arrow */}
+          <button
+            onClick={() => go(1)}
+            className="z-10 shrink-0 w-10 h-10 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center hover:border-black transition-colors hover:cursor-pointer"
+            aria-label="Next review"
+          >
+            <ChevronRight className="h-5 w-5 text-gray-600" />
+          </button>
+        </div>
+
+        {/* Progress bar + dots */}
+        <div className="mt-8 flex flex-col items-center gap-3">
+          {/* Dots */}
+          <div className="flex gap-2">
+            {reviews.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  setCurrent(i);
+                  resetTimer();
+                }}
+                className={`rounded-full transition-all duration-300 ${
+                  i === current
+                    ? "w-6 h-2 bg-black"
+                    : "w-2 h-2 bg-gray-300 hover:bg-gray-400"
+                }`}
+                aria-label={`Go to review ${i + 1}`}
+              />
             ))}
           </div>
         </div>
+
         <div className="flex items-center justify-center w-full mt-8 hover:cursor-pointer hover:underline">
           <Link
             target="_blank"

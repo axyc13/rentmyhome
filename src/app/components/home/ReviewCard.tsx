@@ -30,9 +30,13 @@ export function ReviewCard({ review }: { review: Review }) {
         ))}
       </div>
       {/* Review Text */}
-      <p className="text-black text-base leading-relaxed mb-2">
-        "{displayedText}"
-      </p>
+      {displayedText.length === 0 ? (
+        <p className="text-lg text-gray-500">No review message.</p>
+      ) : (
+        <p className="text-black text-base leading-relaxed mb-2">
+          {displayedText}
+        </p>
+      )}
       {isLong && (
         <button
           className="text-primary text-sm underline mb-6"
@@ -44,7 +48,9 @@ export function ReviewCard({ review }: { review: Review }) {
       {/* Author */}
       <div className="flex items-center gap-4 mt-4">
         <div>
-          <h4 className="font-semibold text-black">{review.name}</h4>
+          <h4 className="font-semibold text-black capitalize">
+            {review.name.toLowerCase()}
+          </h4>
         </div>
       </div>
     </div>
