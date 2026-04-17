@@ -12,7 +12,7 @@ export async function GET() {
       );
     }
 
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}&reviews_sort=newest`;
 
     const response = await fetch(url);
 
