@@ -1,9 +1,23 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const location = searchParams.get("location");
+
     const apiKey = process.env.GOOGLE_PLACES_API_KEY;
-    const placeId = process.env.NEXT_PUBLIC_PLACE_ID;
+    let placeId: string | undefined;
+
+    if (location === "auckland") {
+      placeId = process.env.AUCKLAND_PLACE_ID;
+    } else if (location === "waikato") {
+      placeId = process.env.WAIKATO_PLACE_ID;
+    } else {
+      return NextResponse.json(
+        { error: "Invalid location parameter" },
+        { status: 400 },
+      );
+    }
 
     if (!apiKey || !placeId) {
       return NextResponse.json(
