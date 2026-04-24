@@ -13,9 +13,13 @@ interface Review {
   text: string;
 }
 
+interface ReviewsProps {
+  location?: string;
+}
+
 const TIMER_DURATION = 15000;
 
-export function Reviews() {
+export function Reviews({ location }: ReviewsProps) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +31,10 @@ export function Reviews() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch("/api/reviews");
+        const url = location
+          ? `/api/reviews?location=${location}`
+          : "/api/reviews";
+        const response = await fetch(url);
         if (!response.ok) throw new Error("Failed to fetch reviews");
         const data = await response.json();
         if (data.error) throw new Error(data.error);
@@ -47,7 +54,7 @@ export function Reviews() {
       }
     };
     fetchReviews();
-  }, []);
+  }, [location]);
 
   const resetTimer = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
@@ -198,7 +205,11 @@ export function Reviews() {
         <div className="flex items-center justify-center w-full mt-8 hover:cursor-pointer hover:underline">
           <Link
             target="_blank"
-            href="https://www.google.com/maps/place/Rent+My+Home+(A+Cube+Rentals+Ltd)+-+Residential+Property+Management/@-36.8792352,174.7758868,17.76z/data=!4m8!3m7!1s0x6d0d4da3579c05cf:0xfac8890e0cc4c1a6!8m2!3d-36.8791947!4d174.7760694!9m1!1b1!16s%2Fg%2F11khsq2cb6?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D"
+            href={
+              location === "waikato"
+                ? "https://www.google.com/maps/place/Rentmyhome/@-37.7844029,175.2804463,15z/data=!4m15!1m8!3m7!1s0xa1165f09cdcd46e5:0x2618d7db17924dcd!2sRentmyhome!8m2!3d-37.7844256!4d175.2806003!10e5!16s%2Fg%2F11wnls_710!3m5!1s0xa1165f09cdcd46e5:0x2618d7db17924dcd!8m2!3d-37.7844256!4d175.2806003!16s%2Fg%2F11wnls_710?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D"
+                : "https://www.google.com/maps/place/Rent+My+Home+(A+Cube+Rentals+Ltd)+-+Residential+Property+Management/@-36.8792352,174.7758868,17.76z/data=!4m8!3m7!1s0x6d0d4da3579c05cf:0xfac8890e0cc4c1a6!8m2!3d-36.8791947!4d174.7760694!9m1!1b1!16s%2Fg%2F11khsq2cb6?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D"
+            }
           >
             See more reviews
           </Link>

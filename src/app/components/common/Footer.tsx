@@ -56,7 +56,7 @@ export function Footer() {
             </Link>
             <p className="text-white text-sm mb-6 max-w-xs">
               Professional property management services across Auckland and
-              Waikato. Your roadmap to 0% management fees.
+              Waikato. Your roadmap to 0% management fees*.
             </p>
             {/* Contact Info */}
             <div className="space-y-3 mb-6">
@@ -65,11 +65,11 @@ export function Footer() {
                 +64 22 453 0098
               </a>
               <a
-                href="mailto:receptionauck@rentmyhome.co.nz"
+                href="mailto:info@rentmyhome.co.nz"
                 className="flex items-center gap-3 text-white text-sm hover:underline transition-colors"
               >
                 <Mail className="h-4 w-4" />
-                receptionauck@rentmyhome.co.nz
+                info@rentmyhome.co.nz
               </a>
             </div>
 

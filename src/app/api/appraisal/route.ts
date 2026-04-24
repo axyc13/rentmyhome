@@ -28,9 +28,18 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    const suburbToEmail: Record<string, string> = {
+      auckland: "admin@acuberentals.com",
+      waikato: "receptionauck@rentmyhome.co.nz",
+    };
+
+    const companyEmail = suburbToEmail[suburb] ?? "admin@acuberentals.com";
+
     // Create transporter
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.hostinger.com",
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
@@ -40,21 +49,20 @@ export async function POST(request: NextRequest) {
     // Email content
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "receptionauck@rentmyhome.co.nz",
+      to: companyEmail,
       replyTo: email,
       subject: "New Appraisal Request",
       html: `
-        <h2>New Appraisal Request</h2>
+        <h1>New Appraisal Request</h1>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Address:</strong> ${address}</p>
-        <p><strong>Suburb:</strong> ${suburb}</p>
+        <p><strong>Address:</strong> ${address}, ${suburb}</p>
         <p><strong>Bedrooms:</strong> ${bedrooms}</p>
         <p><strong>Bathrooms:</strong> ${bathrooms}</p>
         <p><strong>Parking:</strong> ${parking}</p>
         <p><strong>Property Type:</strong> ${propertyType}</p>
-        <p>Please reply to this email to contact the requester directly. Thanks</p>
+        <p>Please reply to this email to contact the requester directly. Thanks.</p>
       `,
       attachments,
     };

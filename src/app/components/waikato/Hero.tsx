@@ -40,37 +40,46 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center">
-        <div className="mb-6">
-          <span className="text-lg lg:text-2xl text-white font-bold tracking-wide">
-            Road To
-          </span>
-        </div>
         {/* Main Headline */}
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-4 tracking-tight">
-          <span className="text-red">0%</span> Property
-          <br />
-          Management Fees*
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-white mb-16 tracking-tight">
+          Waikato
         </h1>
 
-        <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Exclusive and customised services that put landlords and tenants
-          first. Experience the journey to hassle-free property management.
-        </p>
-
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row items-center justify-center mb-12 gap-8">
+          <Link
+            className="flex flex-row text-white hover:bg-[#ad0000] text-lg group px-6 py-4 rounded-lg border-2 gap-1"
+            href="#landlords"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById("landlords");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+          >
+            <p>I&apos;m a Landlord</p>
+            <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          <Link
+            className="flex flex-row text-white hover:bg-[#ad0000] text-lg group px-6 py-4 rounded-lg border-2 gap-1"
+            href="#tenancy"
+            onClick={(e) => {
+              e.preventDefault();
+              const element = document.getElementById("tenancy");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+          >
+            <p>I&apos;m a Tenant</p>
+            <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
+          </Link>
           <Link
             className="flex flex-row text-white hover:bg-[#ad0000] text-lg group px-6 py-4 rounded-lg border-2 gap-1"
             href="/auckland"
           >
             <p>I&apos;m in Auckland</p>
-            <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <Link
-            className="flex flex-row text-white hover:bg-[#ad0000] text-lg group px-6 py-4 rounded-lg border-2 gap-1"
-            href="/waikato"
-          >
-            <p>I&apos;m in Waikato</p>
             <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

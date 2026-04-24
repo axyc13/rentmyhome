@@ -140,7 +140,13 @@ export function Appraisal() {
                 </div>
 
                 {step === 1 && (
-                  <div className="space-y-6">
+                  <form
+                    className="space-y-6"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      setStep(2);
+                    }}
+                  >
                     <h3 className="text-xl font-semibold text-black mb-4">
                       Property Address
                     </h3>
@@ -157,46 +163,49 @@ export function Appraisal() {
                           onChange={(e) =>
                             handleInputChange("address", e.target.value)
                           }
+                          required={true}
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="suburb">Suburb / City</label>
+                      <label htmlFor="suburb">City/Region</label>
                       <select
                         id="suburb"
                         value={formData.suburb}
                         onChange={(e) =>
                           handleInputChange("suburb", e.target.value)
                         }
+                        required={true}
                         className="w-full px-3 py-2 border border-input rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                       >
                         <option value="" disabled>
                           Select location
                         </option>
-                        <option value="auckland-central">
-                          Auckland Central
-                        </option>
-                        <option value="auckland-north">North Shore</option>
-                        <option value="auckland-west">West Auckland</option>
-                        <option value="auckland-south">South Auckland</option>
+                        <option value="auckland">Auckland</option>
                         <option value="hamilton">Hamilton</option>
                         <option value="cambridge">Cambridge</option>
                       </select>
                     </div>
 
                     <button
+                      type="submit"
                       className="w-full flex flex-row justify-center text-white bg-red text-lg group px-3 py-2 rounded-lg border-2 gap-1 hover:cursor-pointer"
-                      onClick={() => setStep(2)}
                     >
                       <p>Continue</p>
                       <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
                     </button>
-                  </div>
+                  </form>
                 )}
 
                 {step === 2 && (
-                  <div className="space-y-6">
+                  <form
+                    className="space-y-6"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      setStep(3);
+                    }}
+                  >
                     <h3 className="text-xl font-semibold text-black mb-4">
                       Property Details
                     </h3>
@@ -209,6 +218,7 @@ export function Appraisal() {
                           onChange={(e) =>
                             handleInputChange("bedrooms", e.target.value)
                           }
+                          required={true}
                           className="w-full px-3 py-2 border border-input rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                         >
                           <option value="" disabled>
@@ -229,6 +239,7 @@ export function Appraisal() {
                           onChange={(e) =>
                             handleInputChange("bathrooms", e.target.value)
                           }
+                          required={true}
                           className="w-full px-3 py-2 border border-input rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                         >
                           <option value="" disabled>
@@ -249,6 +260,7 @@ export function Appraisal() {
                           onChange={(e) =>
                             handleInputChange("parking", e.target.value)
                           }
+                          required={true}
                           className="w-full px-3 py-2 border border-input rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                         >
                           <option value="" disabled>
@@ -270,6 +282,7 @@ export function Appraisal() {
                         onChange={(e) =>
                           handleInputChange("propertyType", e.target.value)
                         }
+                        required
                         className="w-full px-3 py-2 border border-input rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                       >
                         <option value="" disabled>
@@ -307,24 +320,31 @@ export function Appraisal() {
 
                     <div className="flex gap-3">
                       <button
+                        type="button"
                         className="flex-1 bg-transparent border rounded-lg hover:cursor-pointer"
                         onClick={() => setStep(1)}
                       >
                         Back
                       </button>
                       <button
+                        type="submit"
                         className="flex-1 flex flex-row justify-center text-white bg-red text-lg group px-3 py-2 rounded-lg border-2 gap-1 hover:cursor-pointer"
-                        onClick={() => setStep(3)}
                       >
                         <p>Continue</p>
                         <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
                       </button>
                     </div>
-                  </div>
+                  </form>
                 )}
 
                 {step === 3 && (
-                  <div className="space-y-6">
+                  <form
+                    className="space-y-6"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSubmit();
+                    }}
+                  >
                     <h3 className="text-xl font-semibold text-black mb-4">
                       Your Details
                     </h3>
@@ -338,6 +358,7 @@ export function Appraisal() {
                         onChange={(e) =>
                           handleInputChange("name", e.target.value)
                         }
+                        required
                       />
                     </div>
 
@@ -351,6 +372,7 @@ export function Appraisal() {
                         onChange={(e) =>
                           handleInputChange("email", e.target.value)
                         }
+                        required
                       />
                     </div>
 
@@ -364,19 +386,21 @@ export function Appraisal() {
                         onChange={(e) =>
                           handleInputChange("phone", e.target.value)
                         }
+                        required
                       />
                     </div>
 
                     <div className="flex gap-3">
                       <button
+                        type="button"
                         className="flex-1 bg-transparent border rounded-lg hover:cursor-pointer"
                         onClick={() => setStep(2)}
                       >
                         Back
                       </button>
                       <button
+                        type="submit"
                         className="flex-1 flex flex-row justify-center text-white bg-red text-lg group px-3 py-2 rounded-lg border-2 gap-1 hover:cursor-pointer disabled:opacity-50"
-                        onClick={handleSubmit}
                         disabled={loading}
                       >
                         <p>
@@ -400,7 +424,7 @@ export function Appraisal() {
                       By submitting, you agree to our privacy policy. We&apos;ll
                       never share your details.
                     </p>
-                  </div>
+                  </form>
                 )}
               </>
             )}

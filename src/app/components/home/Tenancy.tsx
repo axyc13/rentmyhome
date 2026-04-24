@@ -56,7 +56,7 @@ export function Tenancy() {
                 </h3>
                 <p className="text-gray-700 mb-3">
                   Your application form has opened in a new tab. Once submitted,
-                  we'll be in touch within 24–48 hours.
+                  we'll be in touch within 24-48 hours.
                 </p>
                 <p className="text-sm text-gray-500 mb-6 bg-gray-50 rounded-lg p-3 border border-gray-200">
                   💡 Reminder: make sure to hit <strong>Submit</strong> on the
