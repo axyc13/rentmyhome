@@ -30,7 +30,8 @@ export async function POST(request: NextRequest) {
 
     const suburbToEmail: Record<string, string> = {
       auckland: "admin@acuberentals.com",
-      waikato: "receptionauck@rentmyhome.co.nz",
+      hamilton: "receptionauck@rentmyhome.co.nz",
+      cambridge: "receptionauck@rentmyhome.co.nz",
     };
 
     const companyEmail = suburbToEmail[suburb] ?? "admin@acuberentals.com";
