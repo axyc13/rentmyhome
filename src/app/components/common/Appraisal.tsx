@@ -298,7 +298,7 @@ export function Appraisal() {
                     <div className="space-y-2">
                       <label>Upload Photos (Optional)</label>
                       <div
-                        className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-[#ad0000] transition-colors cursor-pointer"
+                        className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-red transition-colors cursor-pointer"
                         onClick={() => fileInputRef.current?.click()}
                       >
                         <Upload className="h-8 w-8 text-black mx-auto mb-2" />
@@ -414,7 +414,7 @@ export function Appraisal() {
 
                     {message && (
                       <p
-                        className={`text-center ${message.includes("success") ? "text-green-600" : "text-red-600"}`}
+                        className={`text-center ${message.includes("success") ? "text-green-600" : "text-red"}`}
                       >
                         {message}
                       </p>
@@ -430,6 +430,12 @@ export function Appraisal() {
             )}
           </div>
         </div>
+        <p className=" text-sm text-white/75 leading-relaxed">
+          RMH Property Management provides residential property management in
+          Auckland and Hamilton (Waikato region). Trusted by over 300 landlords,
+          we focus on reliable service, clear communication, and consistent
+          management.
+        </p>
       </div>
     </section>
   );

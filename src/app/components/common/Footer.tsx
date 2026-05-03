@@ -37,7 +37,7 @@ const socialLinks = [
   {
     name: "LinkedIn",
     icon: Linkedin,
-    href: "https://www.linkedin.com/company/a-cube-rentals-ltd/about/",
+    href: "https://www.linkedin.com/company/rmh-pm/",
   },
 ];
 
@@ -99,13 +99,15 @@ export function Footer() {
                     href={link.href}
                     className="text-white text-sm hover:underline transition-colors"
                     onClick={(e) => {
-                      e.preventDefault();
-                      const element = document.getElementById("landlords");
-                      if (element) {
-                        element.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        });
+                      if (link.href.startsWith("#")) {
+                        e.preventDefault();
+                        const element = document.getElementById("landlords");
+                        if (element) {
+                          element.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                        }
                       }
                     }}
                   >

@@ -17,23 +17,26 @@ export function Hero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0 bg-red">
         <div
-          className="absolute inset-0 bg-linear-to-br from-black via-[#1b1b1b] to-[#ad0000]/20"
+          className="absolute inset-0 bg-linear-to-br from-black via-[#1b1b1b] to-red/20"
           style={{ transform: `translateY(${scrollY * 0.3}px)` }}
         />
-        {/* Animated Road Lines */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-48 h-full">
-            {[...Array(10)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute left-1/2 -translate-x-1/2 w-4 h-20 bg-white/30 rounded-full animate-road-line"
-                style={{
-                  bottom: `${i * 15}%`,
-                  animationDelay: `${i * 0.2}s`,
-                }}
-              />
-            ))}
-          </div>
+        <div className="absolute inset-0 road-texture" />
+        {/* Animated Road Line */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none road-line-wrap">
+          <svg
+            className="road-line-svg"
+            viewBox="0 0 20 1000"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <line
+              x1="10"
+              y1="-300"
+              x2="10"
+              y2="1300"
+              className="road-dash road-dash-a"
+            />
+          </svg>
         </div>
         <div className="absolute inset-0 bg-foreground/40" />
       </div>
@@ -60,14 +63,14 @@ export function Hero() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
           <Link
-            className="flex flex-row text-white hover:bg-[#ad0000] text-lg group px-6 py-4 rounded-lg border-2 gap-1"
+            className="flex flex-row text-white hover:bg-red text-lg group px-6 py-4 rounded-lg border-2 gap-1"
             href="/auckland"
           >
             <p>I&apos;m in Auckland</p>
             <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link
-            className="flex flex-row text-white hover:bg-[#ad0000] text-lg group px-6 py-4 rounded-lg border-2 gap-1"
+            className="flex flex-row text-white hover:bg-red text-lg group px-6 py-4 rounded-lg border-2 gap-1"
             href="/waikato"
           >
             <p>I&apos;m in Waikato</p>
@@ -76,24 +79,6 @@ export function Hero() {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes road-line {
-          0% {
-            transform: translateX(-50%) translateY(0);
-            opacity: 0.3;
-          }
-          50% {
-            opacity: 0.8;
-          }
-          100% {
-            transform: translateX(-50%) translateY(100vh);
-            opacity: 0;
-          }
-        }
-        .animate-road-line {
-          animation: road-line 3s linear infinite;
-        }
-      `}</style>
     </section>
   );
 }
