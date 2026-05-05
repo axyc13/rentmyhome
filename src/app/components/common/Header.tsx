@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/logo.avif";
-import { Menu, X, Phone, ChevronDown } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -13,7 +13,7 @@ const navigation = [
     href: "#tenancy",
   },
   { name: "For Landlords", href: "/landlords" },
-  { name: "Our Team", href: "/placeholder" },
+  { name: "About Us", href: "/aboutus" },
 ];
 
 export function Header() {

@@ -39,13 +39,13 @@ export default function ZeroPercent() {
               Get Free Rental Appraisal
               <ArrowRight className="w-4 h-4" />
             </a>
-              <a
-                href="tel:+64224530098"
-                className="inline-flex items-center justify-center gap-2 bg-red border-2 border-red px-6 py-3 rounded-lg font-semibold hover:bg-red transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                Call Now
-              </a>
+            <a
+              href="tel:+64224530098"
+              className="inline-flex items-center justify-center gap-2 bg-red border-2 border-red px-6 py-3 rounded-lg font-semibold hover:bg-red-800 transition-colors"
+            >
+              <Phone className="w-4 h-4" />
+              Call Now
+            </a>
           </div>
 
           <div className="grid grid-cols-2 gap-4 lg:gap-5">

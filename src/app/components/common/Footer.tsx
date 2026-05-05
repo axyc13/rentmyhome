@@ -17,7 +17,7 @@ const footerLinks = {
     { name: "Apply", href: "#tenancy" },
   ],
   company: [
-    { name: "About Us", href: "/placeholder" },
+    { name: "About Us", href: "/aboutus" },
     { name: "Our Team", href: "/placeholder" },
     { name: "Locations", href: "/placeholder" },
   ],

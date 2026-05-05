@@ -63,8 +63,6 @@ body {
       transparent calc(50% - 124px),
       transparent calc(50% + 124px),
       rgba(0, 0, 0, 0.22) calc(50% + 127px),
-      rgba(255, 255, 255, 0.24) calc(50% + 128px),
-      rgba(255, 255, 255, 0.24) calc(50% + 132px),
       transparent calc(50% + 132px)
     ),
     repeating-linear-gradient(
