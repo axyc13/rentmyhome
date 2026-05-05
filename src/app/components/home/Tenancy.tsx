@@ -346,43 +346,13 @@ export function Tenancy() {
               </div>
             ) : (
               <>
-                <div className="mb-8 grid gap-5 rounded-2xl border border-gray-200 bg-gray-50 p-5 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-center">
-                  <div className="flex items-center gap-2 overflow-x-auto pb-2 justify-end lg:pb-0">
-                    {[1, 2, 3, 4].map((currentStep) => (
-                      <div
-                        key={currentStep}
-                        className="flex items-center gap-2"
-                      >
-                        <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors shrink-0 ${
-                            step >= currentStep
-                              ? "bg-blue-600 text-white"
-                              : "bg-gray-200 text-black"
-                          }`}
-                        >
-                          {currentStep}
-                        </div>
-                        {currentStep < 4 && (
-                          <div
-                            className={`w-10 h-0.5 shrink-0 ${step > currentStep ? "bg-blue-600" : "bg-black/20"}`}
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
                 {step === 1 && (
                   <div className="space-y-5">
-                    <div>
-                      <h3 className="text-xl font-semibold text-black mb-2">
-                        Main Applicant Details
-                      </h3>
-                      <p className="text-gray-600">
-                        Start with the main applicant and the property you want
-                        to apply for.
-                      </p>
-                    </div>
+                    <StepHeader
+                      step={step}
+                      title="Main Applicant Details"
+                      description="Start with the main applicant and the property you want to apply for."
+                    />
 
                     <div className="grid gap-4 lg:grid-cols-12">
                       <div className="lg:col-span-6">
@@ -439,6 +409,7 @@ export function Tenancy() {
                             handleInputChange("idDocumentType", value)
                           }
                           options={idDocumentOptions}
+                          required={true}
                         />
                       </div>
                       <div className="lg:col-span-6">
@@ -483,15 +454,11 @@ export function Tenancy() {
 
                 {step === 2 && (
                   <div className="space-y-5">
-                    <div>
-                      <h3 className="text-xl font-semibold text-black mb-2">
-                        Rental History and References
-                      </h3>
-                      <p className="text-gray-600">
-                        Tell us a bit about yourself, your current tenancy, and
-                        who we can contact for references.
-                      </p>
-                    </div>
+                    <StepHeader
+                      step={step}
+                      title="Rental History and References"
+                      description="Tell us a bit about yourself, your current tenancy, and who we can contact for references."
+                    />
 
                     <div className="grid gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
                       <div className="space-y-4">
@@ -517,21 +484,29 @@ export function Tenancy() {
                       </div>
 
                       <div className="space-y-4 rounded-2xl border border-gray-200 p-5">
-                        <label className="flex items-start gap-3 rounded-xl border border-gray-200 bg-white p-4">
-                          <input
-                            type="checkbox"
-                            checked={formData.isFirstTimeRenter}
-                            onChange={(event) =>
-                              handleFirstTimeRenterChange(event.target.checked)
-                            }
-                            className="mt-1 h-4 w-4 accent-blue-600"
-                          />
-                          <span className="text-sm text-gray-700">
-                            Tick if this you are a {""}
-                            <strong>First Time Renter</strong>. {""}
-                            Otherwise fill the following:
-                          </span>
-                        </label>
+                        <div className="space-y-2">
+                          <p className="block text-sm font-medium text-black">
+                            First Time Renter
+                            <span className="text-red"> *</span>
+                          </p>
+                          <label className="flex items-start gap-3 rounded-xl border border-gray-200 bg-white p-4">
+                            <input
+                              type="checkbox"
+                              checked={formData.isFirstTimeRenter}
+                              onChange={(event) =>
+                                handleFirstTimeRenterChange(
+                                  event.target.checked,
+                                )
+                              }
+                              className="mt-1 h-4 w-4 accent-blue-600"
+                            />
+                            <span className="text-sm text-gray-700">
+                              Tick this if you are a{" "}
+                              <strong>First Time Renter</strong>. Otherwise,
+                              fill in the landlord details below.
+                            </span>
+                          </label>
+                        </div>
 
                         <TextField
                           label="Current Landlord or Property Manager Name"
@@ -642,15 +617,11 @@ export function Tenancy() {
 
                 {step === 3 && (
                   <div className="space-y-5">
-                    <div>
-                      <h3 className="text-xl font-semibold text-black mb-2">
-                        Additional Applicants
-                      </h3>
-                      <p className="text-gray-600">
-                        Add second or third applicants only if they are included
-                        in this application.
-                      </p>
-                    </div>
+                    <StepHeader
+                      step={step}
+                      title="Additional Applicants"
+                      description="Add second or third applicants only if they are included in this application."
+                    />
 
                     <div className="grid gap-4 lg:grid-cols-2">
                       <ApplicantToggle
@@ -722,15 +693,11 @@ export function Tenancy() {
 
                 {step === 4 && (
                   <div className="space-y-5">
-                    <div>
-                      <h3 className="text-xl font-semibold text-black mb-2">
-                        Consent and Submit
-                      </h3>
-                      <p className="text-gray-600">
-                        Review the key details below, then confirm the consent
-                        statement to send your application.
-                      </p>
-                    </div>
+                    <StepHeader
+                      step={step}
+                      title="Consent and Submit"
+                      description="Review the key details below, then confirm the consent statement to send your application."
+                    />
 
                     <div className="grid gap-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
                       <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 space-y-4 text-sm text-gray-700">
@@ -776,24 +743,29 @@ export function Tenancy() {
                       </div>
                     </div>
 
-                    <label className="flex items-start gap-3 rounded-xl border border-gray-200 p-4">
-                      <input
-                        type="checkbox"
-                        checked={formData.consentAccepted}
-                        onChange={(event) =>
-                          handleInputChange(
-                            "consentAccepted",
-                            event.target.checked,
-                          )
-                        }
-                        className="mt-1 h-4 w-4 accent-blue-600"
-                      />
-                      <span className="text-sm text-gray-700">
-                        I confirm the information provided is correct and I
-                        agree to the consent statement above.{" "}
+                    <div className="space-y-2">
+                      <p className="block text-sm font-medium text-black">
+                        Confirmation
                         <span className="text-red"> *</span>
-                      </span>
-                    </label>
+                      </p>
+                      <label className="flex items-start gap-3 rounded-xl border border-gray-200 p-4">
+                        <input
+                          type="checkbox"
+                          checked={formData.consentAccepted}
+                          onChange={(event) =>
+                            handleInputChange(
+                              "consentAccepted",
+                              event.target.checked,
+                            )
+                          }
+                          className="mt-1 h-4 w-4 accent-blue-600"
+                        />
+                        <span className="text-sm text-gray-700">
+                          I confirm the information provided is correct and I
+                          agree to the consent statement above.
+                        </span>
+                      </label>
+                    </div>
 
                     <div className="flex gap-3">
                       <button
@@ -865,6 +837,49 @@ function StepActions({
         <span>Continue</span>
         <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
       </button>
+    </div>
+  );
+}
+
+function StepHeader({
+  step,
+  title,
+  description,
+}: {
+  step: Step;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="grid gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+      <div>
+        <p className="text-sm font-medium uppercase tracking-[0.16em] text-blue-600">
+          Step {step} of 4
+        </p>
+        <h3 className="mt-2 text-xl font-semibold text-black">{title}</h3>
+        <p className="mt-2 text-gray-600">{description}</p>
+      </div>
+
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:justify-end lg:pb-0">
+        {[1, 2, 3, 4].map((currentStep) => (
+          <div key={currentStep} className="flex items-center gap-2">
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors shrink-0 ${
+                step >= currentStep
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+            >
+              {currentStep}
+            </div>
+            {currentStep < 4 && (
+              <div
+                className={`w-10 h-0.5 shrink-0 ${step > currentStep ? "bg-blue-600" : "bg-black/20"}`}
+              />
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -945,11 +960,13 @@ function SelectField({
   value,
   onChange,
   options,
+  required = false,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   options: readonly string[];
+  required?: boolean;
 }) {
   const id = useId();
 
@@ -957,6 +974,7 @@ function SelectField({
     <div className="space-y-2">
       <label htmlFor={id} className="block text-sm font-medium text-black">
         {label}
+        {required && <span className="text-red"> *</span>}
       </label>
       <select
         id={id}
