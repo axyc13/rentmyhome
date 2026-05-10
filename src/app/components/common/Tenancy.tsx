@@ -299,26 +299,11 @@ export function Tenancy() {
                 Apply for Tenancy
               </h2>
               <p className="max-w-3xl text-white/80 text-lg leading-relaxed">
-                Complete your tenancy application right here on the site. The
-                form follows the same step-by-step flow as our landlord
-                appraisal so it is easier to finish in one go.
+                Are one of our properties speaking to you? Complete the form
+                below to apply for tenancy. You will receive a confirmation
+                email upon submisson. Our team will review your application
+                within 5 working days.
               </p>
-            </div>
-
-            <div className="rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm">
-              <div className="space-y-4">
-                {[
-                  "In-page application with clear steps",
-                  "Upload ID and income documents securely",
-                  "Add second and third applicants only if needed",
-                  "Our team reviews completed applications promptly",
-                ].map((item) => (
-                  <div key={item} className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-white" />
-                    <span className="text-white">{item}</span>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
 

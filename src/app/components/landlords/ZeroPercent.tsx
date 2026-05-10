@@ -55,19 +55,26 @@ export default function ZeroPercent() {
           </div>
 
           <div className="grid grid-cols-2 gap-4 lg:gap-5">
-            {[
-              "Google 4.9/5.0",
-              "Facebook 5.0/5.0",
-              "6+ years experience",
-              "100% Healthy Homes compliance",
-            ].map((item) => (
-              <div
-                key={item}
-                className="bg-white/10 border border-white/20 rounded-xl px-4 py-4 text-sm text-white/95"
-              >
-                {item}
-              </div>
-            ))}
+            <Link
+              className="bg-white/10 border border-white/20 rounded-xl px-4 py-4 text-sm text-white/95 transition-colors hover:bg-white hover:text-red hover:cursor-pointer"
+              href="https://www.google.com/maps/place/Rent+My+Home+(A+Cube+Rentals+Ltd)+-+Residential+Property+Management/@-36.8792352,174.7758868,17.76z/data=!4m8!3m7!1s0x6d0d4da3579c05cf:0xfac8890e0cc4c1a6!8m2!3d-36.8791947!4d174.7760694!9m1!1b1!16s%2Fg%2F11khsq2cb6?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D"
+              target="_blank"
+            >
+              Google 4.8/5
+            </Link>
+            <Link
+              className="bg-white/10 border border-white/20 rounded-xl px-4 py-4 text-sm text-white/95 transition-colors hover:bg-white hover:text-red hover:cursor-pointer"
+              href="https://www.facebook.com/rentmyhomeltd"
+              target="_blank"
+            >
+              Facebook 5/5
+            </Link>
+            <div className="bg-white/10 border border-white/20 rounded-xl px-4 py-4 text-sm text-white/95 transition-colors hover:bg-white hover:text-red hover:cursor-pointer">
+              6+ years experience
+            </div>
+            <div className="bg-white/10 border border-white/20 rounded-xl px-4 py-4 text-sm text-white/95 transition-colors hover:bg-white hover:text-red hover:cursor-pointer">
+              100% Healthy Homes compliance
+            </div>
           </div>
         </div>
       </section>
@@ -258,9 +265,12 @@ export default function ZeroPercent() {
                   href="https://www.google.com/maps/place/Rent+My+Home+(A+Cube+Rentals+Ltd)+-+Residential+Property+Management/@-36.8792352,174.7758868,17.76z/data=!4m8!3m7!1s0x6d0d4da3579c05cf:0xfac8890e0cc4c1a6!8m2!3d-36.8791947!4d174.7760694!9m1!1b1!16s%2Fg%2F11khsq2cb6?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 border border-red text-red px-4 py-2 rounded-lg font-semibold hover:bg-red hover:text-white transition-colors"
+                  className="group inline-flex items-center gap-2 border border-red text-red px-4 py-2 rounded-lg font-semibold hover:bg-red hover:text-white transition-colors"
                 >
-                  Get Directions <ExternalLink className="w-4 h-4" />
+                  <span className="transition-colors group-hover:text-white">
+                    Get Directions
+                  </span>
+                  <ExternalLink className="w-4 h-4 text-current transition-colors group-hover:text-white" />
                 </a>
                 <Link
                   href="/auckland"
@@ -292,9 +302,12 @@ export default function ZeroPercent() {
                   href="https://www.google.com/maps/place/Rentmyhome/@-37.7844029,175.2804463,15z/data=!4m15!1m8!3m7!1s0xa1165f09cdcd46e5:0x2618d7db17924dcd!2sRentmyhome!8m2!3d-37.7844256!4d175.2806003!10e5!16s%2Fg%2F11wnls_710!3m5!1s0xa1165f09cdcd46e5:0x2618d7db17924dcd!8m2!3d-37.7844256!4d175.2806003!16s%2Fg%2F11wnls_710?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 border border-red text-red px-4 py-2 rounded-lg font-semibold hover:bg-red hover:text-white transition-colors"
+                  className="group inline-flex items-center gap-2 border border-red text-red px-4 py-2 rounded-lg font-semibold hover:bg-red hover:text-white transition-colors"
                 >
-                  Get Directions <ExternalLink className="w-4 h-4" />
+                  <span className="transition-colors group-hover:text-white">
+                    Get Directions
+                  </span>
+                  <ExternalLink className="w-4 h-4 text-current transition-colors group-hover:text-white" />
                 </a>
                 <Link
                   href="/waikato"
