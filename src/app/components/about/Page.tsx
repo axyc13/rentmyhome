@@ -8,6 +8,8 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import picture from "@/public/pic.jpg";
 
 const pillars = [
   {
@@ -77,33 +79,41 @@ export default function Page() {
         </section>
 
         <section className="bg-[#f9fdfe] py-20">
-          <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[0.9fr,1.1fr] lg:px-8">
-            <div>
-              <h2 className="mt-4 text-4xl font-serif font-bold text-black lg:text-5xl">
-                We manage homes with the same care we would want for our own.
-              </h2>
-            </div>
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-8 items-center">
+              <div className="flex flex-col gap-12">
+                <div>
+                  <h1 className="mt-4 text-3xl font-serif font-bold text-black lg:text-5xl">
+                    We manage homes with the same care we would want for our
+                    own.
+                  </h1>
+                </div>
 
-            <div className="space-y-6 text-sm leading-8 text-gray-700 lg:text-lg">
-              <p>
-                When you partner with us, you benefit from 6+ years of
-                specialised expertise in the Auckland and Waikato markets. We
-                understand that a home is more than just an asset, and we
-                believe a happy tenant is the best insurance for your
-                investment.
-              </p>
-              <p>
-                That philosophy, paired with consistent service and practical
-                systems, is why RMH is trusted by 300+ local and overseas
-                property owners.
-              </p>
-              <div className="grid gap-3 pt-2">
-                {highlights.map((item) => (
-                  <div key={item} className="flex items-start gap-3">
-                    <BadgeCheck className="mt-1 h-5 w-5 shrink-0 text-red" />
-                    <p>{item}</p>
+                <div className="space-y-6 text-sm leading-8 text-gray-700 lg:text-base">
+                  <p>
+                    When you partner with us, you benefit from 6+ years of
+                    specialised expertise in the Auckland and Waikato markets.
+                    We understand that a home is more than just an asset, and we
+                    believe a happy tenant is the best insurance for your
+                    investment.
+                  </p>
+                  <p>
+                    That philosophy, paired with consistent service and
+                    practical systems, is why RMH is trusted by 300+ local and
+                    overseas property owners.
+                  </p>
+                  <div className="grid gap-3 pt-2">
+                    {highlights.map((item) => (
+                      <div key={item} className="flex items-start gap-3">
+                        <BadgeCheck className="mt-1 h-5 w-5 shrink-0 text-red" />
+                        <p>{item}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+              </div>
+              <div className="relative h-full">
+                <Image src={picture} alt="RentMyHome property" fill />
               </div>
             </div>
           </div>
@@ -148,11 +158,8 @@ export default function Page() {
 
         <section className="bg-[#f3f6f7] py-20">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid gap-8 lg:grid-cols-[1fr,0.95fr]">
+            <div className="flex flex-row gap-8 items-center">
               <article className="border border-gray-200 bg-white p-8 lg:p-10">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-red">
-                  Less Is More
-                </p>
                 <h2 className="mt-4 text-4xl font-serif font-bold text-black lg:text-5xl">
                   A fair price, no extra noise.
                 </h2>
@@ -173,15 +180,15 @@ export default function Page() {
                 </p>
               </article>
 
-              <article className="bg-black p-8 text-white lg:p-10">
-                <p className="text-6xl font-serif font-bold text-red">5.5%</p>
+              <article className="bg-red p-8 text-white lg:p-10">
+                <p className="text-6xl font-serif font-bold text-white">5.5%</p>
                 <p className="mt-3 text-lg text-white/75">
                   Flat management fee with a transparent service model.
                 </p>
                 <div className="mt-8 space-y-4">
                   {valuePoints.map((item) => (
                     <div key={item} className="flex items-center gap-3">
-                      <BadgeCheck className="h-5 w-5 shrink-0 text-red" />
+                      <BadgeCheck className="h-5 w-5 shrink-0 text-white" />
                       <span className="text-white/90">{item}</span>
                     </div>
                   ))}

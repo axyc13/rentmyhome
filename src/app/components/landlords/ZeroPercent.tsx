@@ -18,8 +18,14 @@ import Link from "next/link";
 export default function ZeroPercent() {
   return (
     <div className="bg-red">
-      <section className="relative py-16 flex items-center justify-center min-h-screen bg-linear-to-br from-black via-[#1b1b1b] to-red/20 text-white overflow-hidden">
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8 grid lg:grid-cols-[1.2fr,0.8fr] gap-10 items-end">
+      <section className="relative py-16 flex items-center justify-center min-h-screen overflow-hidden">
+        <div className="absolute inset-0 z-0 bg-red">
+          <div className="absolute inset-0 bg-linear-to-br from-black via-[#1b1b1b] to-red/20" />
+          <div className="absolute inset-0 road-texture" />
+          <div className="absolute inset-0 bg-foreground/40" />
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 grid lg:grid-cols-[1.2fr,0.8fr] gap-10 items-end text-white">
           <p className="inline-flex items-center gap-2 text-xs font-semibold tracking-wide border border-white/35 rounded-full px-4 py-2 mb-6 w-fit">
             <MapPin className="w-4 h-4" />
             AUCKLAND & WAIKATO
@@ -83,7 +89,7 @@ export default function ZeroPercent() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
             <article className="bg-white border border-gray-200 p-6">
               <p className="text-xs font-semibold uppercase tracking-wide text-red mb-2">
-                Fast
+                Speed
               </p>
               <h3 className="text-2xl font-serif font-bold text-black mb-4">
                 Fast Listing
