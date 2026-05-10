@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { PDFDocument, PDFFont, StandardFonts, rgb } from "pdf-lib";
 
+import {
+  FALLBACK_ADMIN_EMAIL,
+  getPropertyManagerReferral,
+  HAMILTON_OFFICE_EMAIL,
+  TENANCY_LOCATIONS,
+  type TenancyLocation,
+} from "@/src/app/lib/tenancy-routing";
+
 const A4_WIDTH = 595.28;
 const A4_HEIGHT = 841.89;
 const PAGE_MARGIN = 48;
@@ -25,6 +33,16 @@ const formatValue = (value: string | null, fallback = "Not provided") =>
 const pdfValue = (value: string | null, fallback = "Not provided") =>
   value && value.trim() ? value.trim() : fallback;
 
+const normaliseLocation = (
+  value: string | null | undefined,
+): TenancyLocation | null => {
+  if (!value) {
+    return null;
+  }
+
+  return TENANCY_LOCATIONS.find((location) => location === value) ?? null;
+};
+
 const detailRow = (label: string, value: string | null, fallback?: string) => `
   <tr>
     <td style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;vertical-align:top;">${escapeHtml(label)}</td>
@@ -43,6 +61,7 @@ type ParsedApplication = {
   email: string | null;
   phone: string | null;
   propertyWishToApply: string | null;
+  propertyLocation: TenancyLocation | null;
   currentAddress: string | null;
   idDocumentType: string | null;
   aboutYourself: string | null;
@@ -61,6 +80,9 @@ type ParsedApplication = {
   thirdApplicantEnabled: boolean;
   thirdApplicantName: string | null;
   thirdApplicantIdType: string | null;
+  referralManagerSlug: string | null;
+  referralManagerName: string | null;
+  submissionPath: string | null;
   consentAccepted: boolean;
   totalApplicants: string | null;
 };
@@ -72,6 +94,10 @@ function parseApplication(formData: FormData): ParsedApplication {
   const thirdApplicantEnabled =
     secondApplicantEnabled &&
     truthy(formData.get("thirdApplicantEnabled") as string | null);
+  const referralManagerSlug = formData.get("referralManagerSlug") as
+    | string
+    | null;
+  const referralManager = getPropertyManagerReferral(referralManagerSlug);
 
   return {
     contactName: formData.get("contactName") as string | null,
@@ -79,6 +105,9 @@ function parseApplication(formData: FormData): ParsedApplication {
     email: formData.get("email") as string | null,
     phone: formData.get("phone") as string | null,
     propertyWishToApply: formData.get("propertyWishToApply") as string | null,
+    propertyLocation: normaliseLocation(
+      formData.get("propertyLocation") as string | null,
+    ),
     currentAddress: formData.get("currentAddress") as string | null,
     idDocumentType: formData.get("idDocumentType") as string | null,
     aboutYourself: formData.get("aboutYourself") as string | null,
@@ -101,6 +130,9 @@ function parseApplication(formData: FormData): ParsedApplication {
     thirdApplicantEnabled,
     thirdApplicantName: formData.get("thirdApplicantName") as string | null,
     thirdApplicantIdType: formData.get("thirdApplicantIdType") as string | null,
+    referralManagerSlug: referralManager?.slug ?? null,
+    referralManagerName: referralManager?.name ?? null,
+    submissionPath: formData.get("submissionPath") as string | null,
     consentAccepted: truthy(formData.get("consentAccepted") as string | null),
     totalApplicants: String(
       1 + Number(secondApplicantEnabled) + Number(thirdApplicantEnabled),
@@ -120,6 +152,10 @@ function buildPdfSections(
           label: "Submitted for",
           value: pdfValue(application.propertyWishToApply),
         },
+        {
+          label: "Property location",
+          value: pdfValue(application.propertyLocation, "Not selected"),
+        },
         { label: "Primary contact", value: pdfValue(application.contactName) },
         {
           label: "First applicant",
@@ -134,6 +170,14 @@ function buildPdfSections(
         {
           label: "Consent accepted",
           value: application.consentAccepted ? "Yes" : "No",
+        },
+        {
+          label: "Referred property manager",
+          value: pdfValue(application.referralManagerName, "None"),
+        },
+        {
+          label: "Submission path",
+          value: pdfValue(application.submissionPath, "Not provided"),
         },
       ],
     },
@@ -452,6 +496,20 @@ export async function POST(request: NextRequest) {
       (attachment) => attachment.filename,
     );
     const pdfBuffer = await createApplicationPdf(application, attachmentNames);
+    const referredManager = getPropertyManagerReferral(
+      application.referralManagerSlug,
+    );
+    const adminRecipient = process.env.EMAIL_USER ?? FALLBACK_ADMIN_EMAIL;
+    const notificationRecipients = new Set<string>([adminRecipient]);
+
+    if (application.propertyLocation === "Hamilton") {
+      notificationRecipients.add(HAMILTON_OFFICE_EMAIL);
+    }
+
+    if (referredManager) {
+      notificationRecipients.add(referredManager.email);
+    }
+
     const pdfFilename = `tenancy-application-${
       (application.firstApplicantName ?? application.contactName ?? "applicant")
         .toLowerCase()
@@ -503,6 +561,7 @@ export async function POST(request: NextRequest) {
         ${detailRow("Email", application.email)}
         ${detailRow("Phone", application.phone)}
         ${detailRow("Property applying for", application.propertyWishToApply)}
+        ${detailRow("Property location", application.propertyLocation, "Not selected")}
         ${detailRow("Current address", application.currentAddress)}
         ${detailRow("ID document type", application.idDocumentType)}
       </table>
@@ -527,9 +586,12 @@ export async function POST(request: NextRequest) {
 
       <h2 style="margin:24px 0 12px;">Application Summary</h2>
       <table style="border-collapse:collapse;width:100%;margin-bottom:16px;">
+        ${detailRow("Submission path", application.submissionPath)}
+        ${detailRow("Referred property manager", referredManager?.name ?? application.referralManagerName, "None")}
         ${detailRow("Total applicants", application.totalApplicants)}
         ${detailRow("Consent accepted", application.consentAccepted ? "Yes" : "No")}
         ${detailRow("Supporting files attached", String(attachments.length))}
+        ${detailRow("Notification recipients", Array.from(notificationRecipients).join(", "))}
         ${detailRow("PDF summary attached", pdfFilename)}
       </table>
 
@@ -540,7 +602,7 @@ export async function POST(request: NextRequest) {
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
+      to: Array.from(notificationRecipients).join(", "),
       replyTo: application.email ?? undefined,
       subject: `New Tenancy Application - ${application.firstApplicantName ?? "Website Form"}`,
       html: adminHtml,

@@ -1,7 +1,14 @@
 "use client";
 
-import { ChangeEvent, useId, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useId, useMemo, useState } from "react";
 import { ArrowRight, CheckCircle2, Upload } from "lucide-react";
+
+import {
+  getDefaultLocationForPathname,
+  getPropertyManagerReferral,
+  TENANCY_LOCATIONS,
+  type TenancyLocation,
+} from "@/src/app/lib/tenancy-routing";
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -15,6 +22,7 @@ type TenancyFormState = {
   email: string;
   phone: string;
   propertyWishToApply: string;
+  propertyLocation: TenancyLocation | "";
   currentAddress: string;
   aboutYourself: string;
   reasonForLeaving: string;
@@ -35,15 +43,11 @@ type TenancyFormState = {
   thirdApplicantName: string;
   thirdApplicantIdType: string;
   thirdApplicantIdFile: File | null;
+  referralManagerSlug: string;
+  referralManagerName: string;
+  submissionPath: string;
   consentAccepted: boolean;
 };
-
-const stepTitles = [
-  "Main applicant",
-  "Rental history",
-  "Additional applicants",
-  "Consent",
-] as const;
 
 const idDocumentOptions = [
   "Driving Licence",
@@ -52,43 +56,93 @@ const idDocumentOptions = [
   "Other",
 ] as const;
 
-const initialFormState: TenancyFormState = {
-  contactName: "",
-  firstApplicantName: "",
-  idDocumentType: "Driving Licence",
-  idDocumentFile: null,
-  email: "",
-  phone: "",
-  propertyWishToApply: "",
-  currentAddress: "",
-  aboutYourself: "",
-  reasonForLeaving: "",
-  isFirstTimeRenter: false,
-  currentLandlordName: "",
-  currentLandlordEmail: "",
-  currentLandlordPhone: "",
-  reference1Name: "",
-  reference1Phone: "",
-  reference2Name: "",
-  reference2Phone: "",
-  proofOfIncomeFile: null,
-  secondApplicantEnabled: false,
-  secondApplicantName: "",
-  secondApplicantIdType: "Driving Licence",
-  secondApplicantIdFile: null,
-  thirdApplicantEnabled: false,
-  thirdApplicantName: "",
-  thirdApplicantIdType: "Driving Licence",
-  thirdApplicantIdFile: null,
-  consentAccepted: false,
-};
+function createInitialFormState({
+  propertyLocation = "",
+  referralManagerSlug = "",
+  referralManagerName = "",
+  submissionPath = "",
+}: {
+  propertyLocation?: TenancyLocation | "";
+  referralManagerSlug?: string;
+  referralManagerName?: string;
+  submissionPath?: string;
+} = {}): TenancyFormState {
+  return {
+    contactName: "",
+    firstApplicantName: "",
+    idDocumentType: "Driving Licence",
+    idDocumentFile: null,
+    email: "",
+    phone: "",
+    propertyWishToApply: "",
+    propertyLocation,
+    currentAddress: "",
+    aboutYourself: "",
+    reasonForLeaving: "",
+    isFirstTimeRenter: false,
+    currentLandlordName: "",
+    currentLandlordEmail: "",
+    currentLandlordPhone: "",
+    reference1Name: "",
+    reference1Phone: "",
+    reference2Name: "",
+    reference2Phone: "",
+    proofOfIncomeFile: null,
+    secondApplicantEnabled: false,
+    secondApplicantName: "",
+    secondApplicantIdType: "Driving Licence",
+    secondApplicantIdFile: null,
+    thirdApplicantEnabled: false,
+    thirdApplicantName: "",
+    thirdApplicantIdType: "Driving Licence",
+    thirdApplicantIdFile: null,
+    referralManagerSlug,
+    referralManagerName,
+    submissionPath,
+    consentAccepted: false,
+  };
+}
 
 export function Tenancy() {
+  const [routeContext, setRouteContext] = useState(() => ({
+    propertyLocation: "" as TenancyLocation | "",
+    referralManagerSlug: "",
+    referralManagerName: "",
+    submissionPath: "",
+  }));
+  const formDefaults = useMemo(
+    () => createInitialFormState(routeContext),
+    [routeContext],
+  );
   const [step, setStep] = useState<Step>(1);
-  const [formData, setFormData] = useState<TenancyFormState>(initialFormState);
+  const [formData, setFormData] = useState<TenancyFormState>(formDefaults);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const pathname = window.location.pathname;
+    const searchParams = new URLSearchParams(window.location.search);
+    const referralManagerSlug = searchParams.get("referralManager") ?? "";
+    const referralManager = getPropertyManagerReferral(referralManagerSlug);
+
+    setRouteContext({
+      propertyLocation: getDefaultLocationForPathname(pathname),
+      referralManagerSlug: referralManager?.slug ?? "",
+      referralManagerName: referralManager?.name ?? "",
+      submissionPath: pathname,
+    });
+  }, []);
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      propertyLocation: prev.propertyLocation || formDefaults.propertyLocation,
+      referralManagerSlug: formDefaults.referralManagerSlug,
+      referralManagerName: formDefaults.referralManagerName,
+      submissionPath: formDefaults.submissionPath,
+    }));
+  }, [formDefaults]);
 
   const totalApplicants = useMemo(() => {
     return (
@@ -156,7 +210,10 @@ export function Tenancy() {
 
     setFormData((prev) => {
       if (applicant === "second") {
-        return clearApplicantState("third", clearApplicantState("second", prev));
+        return clearApplicantState(
+          "third",
+          clearApplicantState("second", prev),
+        );
       }
 
       return clearApplicantState("third", prev);
@@ -198,6 +255,7 @@ export function Tenancy() {
         !formData.email ||
         !formData.phone ||
         !formData.propertyWishToApply ||
+        !formData.propertyLocation ||
         !formData.currentAddress
       ) {
         setMessage("Please complete all required fields before continuing.");
@@ -318,7 +376,7 @@ export function Tenancy() {
       }
 
       setSubmitted(true);
-      setFormData(initialFormState);
+      setFormData(formDefaults);
       setStep(1);
     } catch (error) {
       setMessage("An error occurred. Please try again.");
@@ -450,6 +508,14 @@ export function Tenancy() {
                         />
                       </div>
                       <div className="lg:col-span-6">
+                        <LocationField
+                          value={formData.propertyLocation}
+                          onChange={(value) =>
+                            handleInputChange("propertyLocation", value)
+                          }
+                        />
+                      </div>
+                      <div className="lg:col-span-6">
                         <TextField
                           label="Current Address"
                           value={formData.currentAddress}
@@ -472,6 +538,14 @@ export function Tenancy() {
                           required={true}
                         />
                       </div>
+                      {formData.referralManagerName && (
+                        <div className="lg:col-span-12">
+                          <div className="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+                            This application will referred to{" "}
+                            <strong>{formData.referralManagerName}</strong>.
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <StepActions isFirstStep={true} onNext={handleNextStep} />
@@ -665,7 +739,9 @@ export function Tenancy() {
                           onClick={handleAddApplicant}
                           className="rounded-lg border border-blue-600 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 hover:cursor-pointer"
                         >
-                          Add {formData.secondApplicantEnabled ? "third" : "second"} applicant
+                          Add{" "}
+                          {formData.secondApplicantEnabled ? "third" : "second"}{" "}
+                          applicant
                         </button>
                       )}
                     </div>
@@ -709,7 +785,9 @@ export function Tenancy() {
                             onFileChange={(file) =>
                               handleInputChange("thirdApplicantIdFile", file)
                             }
-                            onRemove={() => handleToggleApplicant("third", false)}
+                            onRemove={() =>
+                              handleToggleApplicant("third", false)
+                            }
                           />
                         )}
                       </div>
@@ -745,9 +823,19 @@ export function Tenancy() {
                           value={formData.propertyWishToApply}
                         />
                         <SummaryRow
+                          label="Property location"
+                          value={formData.propertyLocation}
+                        />
+                        <SummaryRow
                           label="Current address"
                           value={formData.currentAddress}
                         />
+                        {formData.referralManagerName && (
+                          <SummaryRow
+                            label="Referred property manager"
+                            value={formData.referralManagerName}
+                          />
+                        )}
                         <SummaryRow
                           label="Applicants on this form"
                           value={String(totalApplicants)}
@@ -1067,6 +1155,53 @@ function UploadField({
         onChange={handleFileChange}
         className="hidden"
       />
+    </div>
+  );
+}
+
+function LocationField({
+  value,
+  onChange,
+}: {
+  value: TenancyLocation | "";
+  onChange: (value: TenancyLocation) => void;
+}) {
+  return (
+    <div className="space-y-2">
+      <p className="block text-sm font-medium text-black">
+        Property Location
+        <span className="text-red"> *</span>
+      </p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {TENANCY_LOCATIONS.map((location) => {
+          const id = `property-location-${location.toLowerCase()}`;
+          const checked = value === location;
+
+          return (
+            <label
+              key={location}
+              htmlFor={id}
+              className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition-colors ${
+                checked
+                  ? "border-blue-600 bg-blue-50"
+                  : "border-gray-200 bg-white hover:border-blue-300"
+              }`}
+            >
+              <input
+                id={id}
+                type="radio"
+                name="propertyLocation"
+                checked={checked}
+                onChange={() => onChange(location)}
+                className="mt-1 h-4 w-4 accent-blue-600"
+              />
+              <span>
+                <span className="block font-medium text-black">{location}</span>
+              </span>
+            </label>
+          );
+        })}
+      </div>
     </div>
   );
 }
