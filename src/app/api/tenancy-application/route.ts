@@ -66,6 +66,13 @@ type ParsedApplication = {
 };
 
 function parseApplication(formData: FormData): ParsedApplication {
+  const secondApplicantEnabled = truthy(
+    formData.get("secondApplicantEnabled") as string | null,
+  );
+  const thirdApplicantEnabled =
+    secondApplicantEnabled &&
+    truthy(formData.get("thirdApplicantEnabled") as string | null);
+
   return {
     contactName: formData.get("contactName") as string | null,
     firstApplicantName: formData.get("firstApplicantName") as string | null,
@@ -86,20 +93,18 @@ function parseApplication(formData: FormData): ParsedApplication {
     reference1Phone: formData.get("reference1Phone") as string | null,
     reference2Name: formData.get("reference2Name") as string | null,
     reference2Phone: formData.get("reference2Phone") as string | null,
-    secondApplicantEnabled: truthy(
-      formData.get("secondApplicantEnabled") as string | null,
-    ),
+    secondApplicantEnabled,
     secondApplicantName: formData.get("secondApplicantName") as string | null,
     secondApplicantIdType: formData.get("secondApplicantIdType") as
       | string
       | null,
-    thirdApplicantEnabled: truthy(
-      formData.get("thirdApplicantEnabled") as string | null,
-    ),
+    thirdApplicantEnabled,
     thirdApplicantName: formData.get("thirdApplicantName") as string | null,
     thirdApplicantIdType: formData.get("thirdApplicantIdType") as string | null,
     consentAccepted: truthy(formData.get("consentAccepted") as string | null),
-    totalApplicants: formData.get("totalApplicants") as string | null,
+    totalApplicants: String(
+      1 + Number(secondApplicantEnabled) + Number(thirdApplicantEnabled),
+    ),
   };
 }
 

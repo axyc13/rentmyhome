@@ -108,29 +108,70 @@ export function Tenancy() {
     }));
   };
 
-  const handleToggleApplicant = (applicant: ApplicantKey, enabled: boolean) => {
+  const clearApplicantState = (
+    applicant: ApplicantKey,
+    currentState: TenancyFormState,
+  ): TenancyFormState => {
     if (applicant === "second") {
-      setFormData((prev) => ({
-        ...prev,
-        secondApplicantEnabled: enabled,
-        secondApplicantName: enabled ? prev.secondApplicantName : "",
-        secondApplicantIdType: enabled
-          ? prev.secondApplicantIdType
-          : "Driving Licence",
-        secondApplicantIdFile: enabled ? prev.secondApplicantIdFile : null,
-      }));
+      return {
+        ...currentState,
+        secondApplicantEnabled: false,
+        secondApplicantName: "",
+        secondApplicantIdType: "Driving Licence",
+        secondApplicantIdFile: null,
+      };
+    }
+
+    return {
+      ...currentState,
+      thirdApplicantEnabled: false,
+      thirdApplicantName: "",
+      thirdApplicantIdType: "Driving Licence",
+      thirdApplicantIdFile: null,
+    };
+  };
+
+  const handleToggleApplicant = (applicant: ApplicantKey, enabled: boolean) => {
+    if (enabled) {
+      if (applicant === "second") {
+        setFormData((prev) => ({
+          ...prev,
+          secondApplicantEnabled: true,
+        }));
+        return;
+      }
+
+      setFormData((prev) => {
+        if (!prev.secondApplicantEnabled) {
+          return prev;
+        }
+
+        return {
+          ...prev,
+          thirdApplicantEnabled: true,
+        };
+      });
       return;
     }
 
-    setFormData((prev) => ({
-      ...prev,
-      thirdApplicantEnabled: enabled,
-      thirdApplicantName: enabled ? prev.thirdApplicantName : "",
-      thirdApplicantIdType: enabled
-        ? prev.thirdApplicantIdType
-        : "Driving Licence",
-      thirdApplicantIdFile: enabled ? prev.thirdApplicantIdFile : null,
-    }));
+    setFormData((prev) => {
+      if (applicant === "second") {
+        return clearApplicantState("third", clearApplicantState("second", prev));
+      }
+
+      return clearApplicantState("third", prev);
+    });
+  };
+
+  const handleAddApplicant = () => {
+    if (!formData.secondApplicantEnabled) {
+      handleToggleApplicant("second", true);
+      return;
+    }
+
+    if (!formData.thirdApplicantEnabled) {
+      handleToggleApplicant("third", true);
+    }
   };
 
   const handleFirstTimeRenterChange = (checked: boolean) => {
@@ -608,24 +649,25 @@ export function Tenancy() {
                       description="Add second or third applicants only if they are included in this application."
                     />
 
-                    <div className="grid gap-4 lg:grid-cols-2">
-                      <ApplicantToggle
-                        title="Add second applicant"
-                        description="Do you wish to add a second applicant?"
-                        checked={formData.secondApplicantEnabled}
-                        onChange={(checked) =>
-                          handleToggleApplicant("second", checked)
-                        }
-                      />
-
-                      <ApplicantToggle
-                        title="Add third applicant"
-                        description="Do you wish to add a third applicant?"
-                        checked={formData.thirdApplicantEnabled}
-                        onChange={(checked) =>
-                          handleToggleApplicant("third", checked)
-                        }
-                      />
+                    <div className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <p className="font-medium text-black">
+                          Applicants on this form: {totalApplicants} of 3
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Add applicants one at a time, up to a maximum of
+                          three.
+                        </p>
+                      </div>
+                      {totalApplicants < 3 && (
+                        <button
+                          type="button"
+                          onClick={handleAddApplicant}
+                          className="rounded-lg border border-blue-600 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 hover:cursor-pointer"
+                        >
+                          Add {formData.secondApplicantEnabled ? "third" : "second"} applicant
+                        </button>
+                      )}
                     </div>
 
                     {(formData.secondApplicantEnabled ||
@@ -646,6 +688,9 @@ export function Tenancy() {
                             onFileChange={(file) =>
                               handleInputChange("secondApplicantIdFile", file)
                             }
+                            onRemove={() =>
+                              handleToggleApplicant("second", false)
+                            }
                           />
                         )}
 
@@ -664,6 +709,7 @@ export function Tenancy() {
                             onFileChange={(file) =>
                               handleInputChange("thirdApplicantIdFile", file)
                             }
+                            onRemove={() => handleToggleApplicant("third", false)}
                           />
                         )}
                       </div>
@@ -1025,44 +1071,6 @@ function UploadField({
   );
 }
 
-function ApplicantToggle({
-  title,
-  description,
-  checked,
-  onChange,
-}: {
-  title: string;
-  description: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}) {
-  const id = useId();
-
-  return (
-    <div className="rounded-xl border border-gray-200 p-4">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="font-medium text-black">{title}</p>
-          <p className="text-sm text-gray-600">{description}</p>
-        </div>
-        <label
-          htmlFor={id}
-          className="flex items-center gap-2 text-sm text-black"
-        >
-          <span>{checked ? "No" : "Yes"}</span>
-          <input
-            id={id}
-            type="checkbox"
-            checked={checked}
-            onChange={(event) => onChange(event.target.checked)}
-            className="h-4 w-4 accent-blue-600"
-          />
-        </label>
-      </div>
-    </div>
-  );
-}
-
 function ApplicantCard({
   title,
   name,
@@ -1071,6 +1079,7 @@ function ApplicantCard({
   onNameChange,
   onIdTypeChange,
   onFileChange,
+  onRemove,
 }: {
   title: string;
   name: string;
@@ -1079,10 +1088,20 @@ function ApplicantCard({
   onNameChange: (value: string) => void;
   onIdTypeChange: (value: string) => void;
   onFileChange: (file: File | null) => void;
+  onRemove: () => void;
 }) {
   return (
     <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 space-y-4">
-      <h4 className="text-lg font-semibold text-black">{title}</h4>
+      <div className="flex items-center justify-between gap-3">
+        <h4 className="text-lg font-semibold text-black">{title}</h4>
+        <button
+          type="button"
+          onClick={onRemove}
+          className="text-sm font-medium text-red-600 transition-colors hover:text-red-700 hover:cursor-pointer"
+        >
+          Remove
+        </button>
+      </div>
       <TextField
         label={`${title} Name`}
         value={name}
