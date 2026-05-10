@@ -12,7 +12,7 @@ export default async function NotFound() {
           We are currently working on this page. Please check back later!
         </h1>
         <Link href="/">
-          <button className="border px-4 py-2 rounded-lg text-xs lg:text-base cursor-pointer hover:bg-[#ad0000] hover:text-white transition-colors">
+          <button className="border px-4 py-2 rounded-lg text-xs lg:text-base cursor-pointer hover:bg-red hover:text-white transition-colors">
             Return To Homepage
           </button>
         </Link>

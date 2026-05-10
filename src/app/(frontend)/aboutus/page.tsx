@@ -1,16 +1,14 @@
+import Page from "../../components/aboutus/Page";
 import { Header } from "@/src/app/components/common/Header";
 import { Footer } from "@/src/app/components/common/Footer";
 import { Appraisal } from "@/src/app/components/common/Appraisal";
-import ZeroPercent from "@/src/app/components/landlords/ZeroPercent";
-import Terms from "@/src/app/components/landlords/Terms";
 
-export default function Landlords() {
+export default function page() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-[#f9fdfe]">
       <Header />
-      <ZeroPercent />
+      <Page />
       <Appraisal />
-      <Terms />
       <Footer />
     </main>
   );

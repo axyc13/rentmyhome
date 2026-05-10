@@ -1,17 +1,289 @@
 "use client";
 
-import { useState } from "react";
-import { CheckCircle2, ExternalLink } from "lucide-react";
+import { ChangeEvent, useId, useMemo, useState } from "react";
+import { ArrowRight, CheckCircle2, Upload } from "lucide-react";
+
+type Step = 1 | 2 | 3 | 4;
+
+type ApplicantKey = "second" | "third";
+
+type TenancyFormState = {
+  contactName: string;
+  firstApplicantName: string;
+  idDocumentType: string;
+  idDocumentFile: File | null;
+  email: string;
+  phone: string;
+  propertyWishToApply: string;
+  currentAddress: string;
+  aboutYourself: string;
+  reasonForLeaving: string;
+  isFirstTimeRenter: boolean;
+  currentLandlordName: string;
+  currentLandlordEmail: string;
+  currentLandlordPhone: string;
+  reference1Name: string;
+  reference1Phone: string;
+  reference2Name: string;
+  reference2Phone: string;
+  proofOfIncomeFile: File | null;
+  secondApplicantEnabled: boolean;
+  secondApplicantName: string;
+  secondApplicantIdType: string;
+  secondApplicantIdFile: File | null;
+  thirdApplicantEnabled: boolean;
+  thirdApplicantName: string;
+  thirdApplicantIdType: string;
+  thirdApplicantIdFile: File | null;
+  consentAccepted: boolean;
+};
+
+const stepTitles = [
+  "Main applicant",
+  "Rental history",
+  "Additional applicants",
+  "Consent",
+] as const;
+
+const idDocumentOptions = [
+  "Driving Licence",
+  "Passport",
+  "18+ Card",
+  "Other",
+] as const;
+
+const initialFormState: TenancyFormState = {
+  contactName: "",
+  firstApplicantName: "",
+  idDocumentType: "Driving Licence",
+  idDocumentFile: null,
+  email: "",
+  phone: "",
+  propertyWishToApply: "",
+  currentAddress: "",
+  aboutYourself: "",
+  reasonForLeaving: "",
+  isFirstTimeRenter: false,
+  currentLandlordName: "",
+  currentLandlordEmail: "",
+  currentLandlordPhone: "",
+  reference1Name: "",
+  reference1Phone: "",
+  reference2Name: "",
+  reference2Phone: "",
+  proofOfIncomeFile: null,
+  secondApplicantEnabled: false,
+  secondApplicantName: "",
+  secondApplicantIdType: "Driving Licence",
+  secondApplicantIdFile: null,
+  thirdApplicantEnabled: false,
+  thirdApplicantName: "",
+  thirdApplicantIdType: "Driving Licence",
+  thirdApplicantIdFile: null,
+  consentAccepted: false,
+};
 
 export function Tenancy() {
+  const [step, setStep] = useState<Step>(1);
+  const [formData, setFormData] = useState<TenancyFormState>(initialFormState);
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [message, setMessage] = useState("");
 
-  const handleApplyClick = () => {
-    window.open(
-      "https://opnform.com/forms/pre-tenancy-application-form-hweeul-1",
-      "_blank",
+  const totalApplicants = useMemo(() => {
+    return (
+      1 +
+      Number(formData.secondApplicantEnabled) +
+      Number(formData.thirdApplicantEnabled)
     );
-    setSubmitted(true);
+  }, [formData.secondApplicantEnabled, formData.thirdApplicantEnabled]);
+
+  const handleInputChange = (
+    field: keyof TenancyFormState,
+    value: string | boolean | File | null,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleToggleApplicant = (applicant: ApplicantKey, enabled: boolean) => {
+    if (applicant === "second") {
+      setFormData((prev) => ({
+        ...prev,
+        secondApplicantEnabled: enabled,
+        secondApplicantName: enabled ? prev.secondApplicantName : "",
+        secondApplicantIdType: enabled
+          ? prev.secondApplicantIdType
+          : "Driving Licence",
+        secondApplicantIdFile: enabled ? prev.secondApplicantIdFile : null,
+      }));
+      return;
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      thirdApplicantEnabled: enabled,
+      thirdApplicantName: enabled ? prev.thirdApplicantName : "",
+      thirdApplicantIdType: enabled
+        ? prev.thirdApplicantIdType
+        : "Driving Licence",
+      thirdApplicantIdFile: enabled ? prev.thirdApplicantIdFile : null,
+    }));
+  };
+
+  const handleFirstTimeRenterChange = (checked: boolean) => {
+    setFormData((prev) => ({
+      ...prev,
+      isFirstTimeRenter: checked,
+      currentLandlordName: checked
+        ? "First Time Renter"
+        : prev.currentLandlordName === "First Time Renter"
+          ? ""
+          : prev.currentLandlordName,
+      currentLandlordEmail: checked ? "" : prev.currentLandlordEmail,
+      currentLandlordPhone: checked ? "" : prev.currentLandlordPhone,
+    }));
+  };
+
+  const validateCurrentStep = () => {
+    if (step === 1) {
+      if (
+        !formData.contactName ||
+        !formData.firstApplicantName ||
+        !formData.idDocumentType ||
+        !formData.idDocumentFile ||
+        !formData.email ||
+        !formData.phone ||
+        !formData.propertyWishToApply ||
+        !formData.currentAddress
+      ) {
+        setMessage("Please complete all required fields before continuing.");
+        return false;
+      }
+    }
+
+    if (step === 2) {
+      if (
+        !formData.aboutYourself ||
+        !formData.reasonForLeaving ||
+        !formData.reference1Name ||
+        !formData.reference1Phone ||
+        !formData.reference2Name ||
+        !formData.reference2Phone ||
+        !formData.proofOfIncomeFile
+      ) {
+        setMessage("Please complete all required fields before continuing.");
+        return false;
+      }
+
+      if (
+        !formData.isFirstTimeRenter &&
+        (!formData.currentLandlordName ||
+          !formData.currentLandlordEmail ||
+          !formData.currentLandlordPhone)
+      ) {
+        setMessage(
+          "Please add your current landlord details or mark yourself as a first-time renter.",
+        );
+        return false;
+      }
+    }
+
+    if (step === 3) {
+      if (
+        formData.secondApplicantEnabled &&
+        (!formData.secondApplicantName ||
+          !formData.secondApplicantIdType ||
+          !formData.secondApplicantIdFile)
+      ) {
+        setMessage(
+          "Please complete the second applicant details or turn it off.",
+        );
+        return false;
+      }
+
+      if (
+        formData.thirdApplicantEnabled &&
+        (!formData.thirdApplicantName ||
+          !formData.thirdApplicantIdType ||
+          !formData.thirdApplicantIdFile)
+      ) {
+        setMessage(
+          "Please complete the third applicant details or turn it off.",
+        );
+        return false;
+      }
+    }
+
+    if (step === 4 && !formData.consentAccepted) {
+      setMessage("Please accept the consent statement before submitting.");
+      return false;
+    }
+
+    setMessage("");
+    return true;
+  };
+
+  const handleNextStep = () => {
+    if (!validateCurrentStep()) {
+      return;
+    }
+
+    setStep((prev) => Math.min(prev + 1, 4) as Step);
+  };
+
+  const handleSubmit = async () => {
+    if (!validateCurrentStep()) {
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const payload = new FormData();
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value instanceof File) {
+          payload.append(key, value);
+          return;
+        }
+
+        if (value === null) {
+          payload.append(key, "");
+          return;
+        }
+
+        if (typeof value === "boolean") {
+          payload.append(key, value ? "true" : "false");
+          return;
+        }
+
+        payload.append(key, value);
+      });
+
+      payload.append("totalApplicants", String(totalApplicants));
+
+      const response = await fetch("/api/tenancy-application", {
+        method: "POST",
+        body: payload,
+      });
+
+      if (!response.ok) {
+        setMessage("Failed to submit application. Please try again.");
+        return;
+      }
+
+      setSubmitted(true);
+      setFormData(initialFormState);
+      setStep(1);
+    } catch (error) {
+      setMessage("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -20,98 +292,844 @@ export function Tenancy() {
       className="flex flex-col gap-10 items-center py-20 bg-blue-600"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left Content */}
-          <div>
-            <h2 className="text-3xl lg:text-5xl font-serif font-bold text-white mt-3 mb-6">
-              Apply for Tenancy
-            </h2>
-            <p className="text-white/80 text-lg mb-8 leading-relaxed">
-              Ready to find your perfect home? Fill out our tenancy application
-              form online. We'll get back to you quickly.
-            </p>
+        <div className="space-y-12">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-start">
+            <div>
+              <h2 className="text-3xl lg:text-5xl font-serif font-bold text-white mt-3 mb-6">
+                Apply for Tenancy
+              </h2>
+              <p className="max-w-3xl text-white/80 text-lg leading-relaxed">
+                Complete your tenancy application right here on the site. The
+                form follows the same step-by-step flow as our landlord
+                appraisal so it is easier to finish in one go.
+              </p>
+            </div>
 
-            <div className="space-y-4">
-              {[
-                "Simple online application form",
-                "Takes just a few minutes",
-                "No downloads required",
-                "Response within 24-48 hours",
-              ].map((item, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-white" />
-                  <span className="text-white">{item}</span>
-                </div>
-              ))}
+            <div className="rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm">
+              <div className="space-y-4">
+                {[
+                  "In-page application with clear steps",
+                  "Upload ID and income documents securely",
+                  "Add second and third applicants only if needed",
+                  "Our team reviews completed applications promptly",
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-white" />
+                    <span className="text-white">{item}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Right Card */}
-          <div className="bg-white rounded-2xl p-8 shadow-2xl border-white border">
+          <div className="bg-white rounded-2xl p-6 lg:p-10 shadow-2xl border-white border">
             {submitted ? (
               <div className="text-center">
                 <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
                 <h3 className="text-2xl font-semibold text-black mb-4">
-                  Application Opened!
+                  Application Submitted
                 </h3>
-                <p className="text-gray-700 mb-3">
-                  Your application form has opened in a new tab. Once submitted,
-                  we'll be in touch within 24-48 hours.
-                </p>
-                <p className="text-sm text-gray-500 mb-6 bg-gray-50 rounded-lg p-3 border border-gray-200">
-                  💡 Reminder: make sure to hit <strong>Submit</strong> on the
-                  form in the other tab — your application isn't complete until
-                  then.
+                <p className="text-gray-700 mb-6">
+                  Thanks for sending through your tenancy application. Our team
+                  has received it and will review it shortly.
                 </p>
                 <button
-                  onClick={() => setSubmitted(false)}
+                  type="button"
+                  onClick={() => {
+                    setSubmitted(false);
+                    setMessage("");
+                  }}
                   className="w-full flex flex-row justify-center text-white bg-blue-600 text-lg px-3 py-2 rounded-lg border-2 hover:bg-blue-700 transition-colors hover:cursor-pointer"
                 >
                   Submit Another Application
                 </button>
               </div>
             ) : (
-              <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-black mb-2">
-                  Ready to Apply?
-                </h3>
-                <p className="text-gray-600">
-                  Our application form will only takes a few minutes to
-                  complete. You should have the following information ready:
-                </p>
+              <>
+                {step === 1 && (
+                  <div className="space-y-5">
+                    <StepHeader
+                      step={step}
+                      title="Main Applicant Details"
+                      description="Start with the main applicant and the property you want to apply for."
+                    />
 
-                <div className="space-y-3">
-                  {[
-                    "Personal & contact details",
-                    "Employment information",
-                    "Rental history",
-                    "References",
-                  ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <span className="text-gray-700 text-sm">
-                        {index + 1}. {item}
-                      </span>
+                    <div className="grid gap-4 lg:grid-cols-12">
+                      <div className="lg:col-span-6">
+                        <TextField
+                          label="Your Name"
+                          value={formData.contactName}
+                          onChange={(value) =>
+                            handleInputChange("contactName", value)
+                          }
+                          placeholder="Your full name"
+                          required={true}
+                        />
+                      </div>
+                      <div className="lg:col-span-6">
+                        <TextField
+                          label="First Applicant Name"
+                          value={formData.firstApplicantName}
+                          onChange={(value) =>
+                            handleInputChange("firstApplicantName", value)
+                          }
+                          placeholder="First applicant full name"
+                          required={true}
+                        />
+                      </div>
+                      <div className="lg:col-span-5">
+                        <TextField
+                          label="Email Address"
+                          type="email"
+                          value={formData.email}
+                          onChange={(value) =>
+                            handleInputChange("email", value)
+                          }
+                          placeholder="name@example.com"
+                          required={true}
+                        />
+                      </div>
+                      <div className="lg:col-span-3">
+                        <TextField
+                          label="Phone Number"
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(value) =>
+                            handleInputChange("phone", value)
+                          }
+                          placeholder="+64"
+                          required={true}
+                        />
+                      </div>
+                      <div className="lg:col-span-4">
+                        <SelectField
+                          label="ID Document Type"
+                          value={formData.idDocumentType}
+                          onChange={(value) =>
+                            handleInputChange("idDocumentType", value)
+                          }
+                          options={idDocumentOptions}
+                          required={true}
+                        />
+                      </div>
+                      <div className="lg:col-span-6">
+                        <TextField
+                          label="Property You Wish to Apply"
+                          value={formData.propertyWishToApply}
+                          onChange={(value) =>
+                            handleInputChange("propertyWishToApply", value)
+                          }
+                          placeholder="Property address or listing reference"
+                          required={true}
+                        />
+                      </div>
+                      <div className="lg:col-span-6">
+                        <TextField
+                          label="Current Address"
+                          value={formData.currentAddress}
+                          onChange={(value) =>
+                            handleInputChange("currentAddress", value)
+                          }
+                          placeholder="Your current address"
+                          required={true}
+                        />
+                      </div>
+                      <div className="lg:col-span-6">
+                        <UploadField
+                          label="ID Document"
+                          helperText="Driving Licence, Passport etc"
+                          file={formData.idDocumentFile}
+                          onChange={(file) =>
+                            handleInputChange("idDocumentFile", file)
+                          }
+                          accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                          required={true}
+                        />
+                      </div>
                     </div>
-                  ))}
-                </div>
 
-                <button
-                  onClick={handleApplyClick}
-                  className="w-full flex flex-row justify-center items-center text-white bg-blue-600 text-lg px-6 py-3 rounded-lg border-2 gap-2 hover:bg-blue-700 transition-colors hover:cursor-pointer"
-                >
-                  <ExternalLink className="h-5 w-5" />
-                  <span>Start Application</span>
-                </button>
+                    <StepActions isFirstStep={true} onNext={handleNextStep} />
+                  </div>
+                )}
 
-                <p className="text-xs text-gray-500 text-center">
-                  You'll be taken to our secure form. Your details are kept
-                  private and never shared.
+                {step === 2 && (
+                  <div className="space-y-5">
+                    <StepHeader
+                      step={step}
+                      title="Rental History and References"
+                      description="Tell us a bit about yourself, your current tenancy, and who we can contact for references."
+                    />
+
+                    <div className="grid gap-4 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
+                      <div className="space-y-4">
+                        <TextAreaField
+                          label="Brief About Yourself"
+                          value={formData.aboutYourself}
+                          onChange={(value) =>
+                            handleInputChange("aboutYourself", value)
+                          }
+                          placeholder="Work, study, lifestyle, who will be living in the home, and anything useful for the application."
+                          required={true}
+                        />
+
+                        <TextAreaField
+                          label="Reason For Leaving the Current Address"
+                          value={formData.reasonForLeaving}
+                          onChange={(value) =>
+                            handleInputChange("reasonForLeaving", value)
+                          }
+                          placeholder="Why are you moving?"
+                          required={true}
+                        />
+                      </div>
+
+                      <div className="space-y-4 rounded-2xl border border-gray-200 p-5">
+                        <div className="space-y-2">
+                          <p className="block text-sm font-medium text-black">
+                            First Time Renter
+                            <span className="text-red"> *</span>
+                          </p>
+                          <label className="flex items-start gap-3 rounded-xl border border-gray-200 bg-white p-4">
+                            <input
+                              type="checkbox"
+                              checked={formData.isFirstTimeRenter}
+                              onChange={(event) =>
+                                handleFirstTimeRenterChange(
+                                  event.target.checked,
+                                )
+                              }
+                              className="mt-1 h-4 w-4 accent-blue-600"
+                            />
+                            <span className="text-sm text-gray-700">
+                              Tick this if you are a{" "}
+                              <strong>First Time Renter</strong>. Otherwise,
+                              fill in the landlord details below.
+                            </span>
+                          </label>
+                        </div>
+
+                        <TextField
+                          label="Current Landlord or Property Manager Name"
+                          value={formData.currentLandlordName}
+                          onChange={(value) =>
+                            handleInputChange("currentLandlordName", value)
+                          }
+                          placeholder="Current landlord or property manager"
+                          required={!formData.isFirstTimeRenter}
+                          disabled={formData.isFirstTimeRenter}
+                        />
+                        <TextField
+                          label="Current Landlord or Property Manager Email"
+                          type="email"
+                          value={formData.currentLandlordEmail}
+                          onChange={(value) =>
+                            handleInputChange("currentLandlordEmail", value)
+                          }
+                          placeholder="landlord@example.com"
+                          required={!formData.isFirstTimeRenter}
+                          disabled={formData.isFirstTimeRenter}
+                        />
+                        <TextField
+                          label="Current Landlord or Property Manager Phone Number"
+                          type="tel"
+                          value={formData.currentLandlordPhone}
+                          onChange={(value) =>
+                            handleInputChange("currentLandlordPhone", value)
+                          }
+                          placeholder="+64"
+                          required={!formData.isFirstTimeRenter}
+                          disabled={formData.isFirstTimeRenter}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 xl:grid-cols-3">
+                      <div className="rounded-2xl border border-gray-200 p-5 space-y-4">
+                        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-600">
+                          Reference 1
+                        </p>
+                        <TextField
+                          label="Reference - 1 Name"
+                          value={formData.reference1Name}
+                          onChange={(value) =>
+                            handleInputChange("reference1Name", value)
+                          }
+                          placeholder="Reference name"
+                          required={true}
+                        />
+                        <TextField
+                          label="Reference - 1 Phone Number"
+                          type="tel"
+                          value={formData.reference1Phone}
+                          onChange={(value) =>
+                            handleInputChange("reference1Phone", value)
+                          }
+                          placeholder="+64"
+                          required={true}
+                        />
+                      </div>
+
+                      <div className="rounded-2xl border border-gray-200 p-5 space-y-4">
+                        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-600">
+                          Reference 2
+                        </p>
+                        <TextField
+                          label="Reference - 2 Name"
+                          value={formData.reference2Name}
+                          onChange={(value) =>
+                            handleInputChange("reference2Name", value)
+                          }
+                          placeholder="Reference name"
+                          required={true}
+                        />
+                        <TextField
+                          label="Reference - 2 Phone Number"
+                          type="tel"
+                          value={formData.reference2Phone}
+                          onChange={(value) =>
+                            handleInputChange("reference2Phone", value)
+                          }
+                          placeholder="+64"
+                          required={true}
+                        />
+                      </div>
+
+                      <div className="rounded-2xl border border-gray-200 p-5">
+                        <UploadField
+                          label="Rent Affordability / Proof Of Income Document"
+                          helperText="Payslips, employment letter, bank statement, or similar."
+                          file={formData.proofOfIncomeFile}
+                          onChange={(file) =>
+                            handleInputChange("proofOfIncomeFile", file)
+                          }
+                          accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                          required={true}
+                        />
+                      </div>
+                    </div>
+
+                    <StepActions
+                      onBack={() => setStep(1)}
+                      onNext={handleNextStep}
+                    />
+                  </div>
+                )}
+
+                {step === 3 && (
+                  <div className="space-y-5">
+                    <StepHeader
+                      step={step}
+                      title="Additional Applicants"
+                      description="Add second or third applicants only if they are included in this application."
+                    />
+
+                    <div className="grid gap-4 lg:grid-cols-2">
+                      <ApplicantToggle
+                        title="Add second applicant"
+                        description="Do you wish to add a second applicant?"
+                        checked={formData.secondApplicantEnabled}
+                        onChange={(checked) =>
+                          handleToggleApplicant("second", checked)
+                        }
+                      />
+
+                      <ApplicantToggle
+                        title="Add third applicant"
+                        description="Do you wish to add a third applicant?"
+                        checked={formData.thirdApplicantEnabled}
+                        onChange={(checked) =>
+                          handleToggleApplicant("third", checked)
+                        }
+                      />
+                    </div>
+
+                    {(formData.secondApplicantEnabled ||
+                      formData.thirdApplicantEnabled) && (
+                      <div className="grid gap-4 xl:grid-cols-2">
+                        {formData.secondApplicantEnabled && (
+                          <ApplicantCard
+                            title="Second Applicant"
+                            name={formData.secondApplicantName}
+                            idType={formData.secondApplicantIdType}
+                            file={formData.secondApplicantIdFile}
+                            onNameChange={(value) =>
+                              handleInputChange("secondApplicantName", value)
+                            }
+                            onIdTypeChange={(value) =>
+                              handleInputChange("secondApplicantIdType", value)
+                            }
+                            onFileChange={(file) =>
+                              handleInputChange("secondApplicantIdFile", file)
+                            }
+                          />
+                        )}
+
+                        {formData.thirdApplicantEnabled && (
+                          <ApplicantCard
+                            title="Third Applicant"
+                            name={formData.thirdApplicantName}
+                            idType={formData.thirdApplicantIdType}
+                            file={formData.thirdApplicantIdFile}
+                            onNameChange={(value) =>
+                              handleInputChange("thirdApplicantName", value)
+                            }
+                            onIdTypeChange={(value) =>
+                              handleInputChange("thirdApplicantIdType", value)
+                            }
+                            onFileChange={(file) =>
+                              handleInputChange("thirdApplicantIdFile", file)
+                            }
+                          />
+                        )}
+                      </div>
+                    )}
+
+                    <StepActions
+                      onBack={() => setStep(2)}
+                      onNext={handleNextStep}
+                    />
+                  </div>
+                )}
+
+                {step === 4 && (
+                  <div className="space-y-5">
+                    <StepHeader
+                      step={step}
+                      title="Consent and Submit"
+                      description="Review the key details below, then confirm the consent statement to send your application."
+                    />
+
+                    <div className="grid gap-4 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+                      <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 space-y-4 text-sm text-gray-700">
+                        <SummaryRow
+                          label="Primary contact"
+                          value={`${formData.contactName} (${formData.email})`}
+                        />
+                        <SummaryRow
+                          label="First applicant"
+                          value={formData.firstApplicantName}
+                        />
+                        <SummaryRow
+                          label="Property applying for"
+                          value={formData.propertyWishToApply}
+                        />
+                        <SummaryRow
+                          label="Current address"
+                          value={formData.currentAddress}
+                        />
+                        <SummaryRow
+                          label="Applicants on this form"
+                          value={String(totalApplicants)}
+                        />
+                      </div>
+
+                      <div className="rounded-xl border border-blue-100 bg-blue-50 p-5 text-sm leading-7 text-gray-700">
+                        <p>
+                          I authorise the Landlord/Property Manager to collect,
+                          retain and use this information for the purpose of
+                          assessing my creditworthiness and suitability for the
+                          tenancy.
+                        </p>
+                        <p className="mt-3">
+                          I understand that a credit reporting agency may hold
+                          and disclose my information for credit checking or
+                          debt collection, and that they may check the Ministry
+                          of Justice fines database for overdue fines.
+                        </p>
+                        <p className="mt-3">
+                          I consent that no physical signature is needed while
+                          filling in this e-application form.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <p className="block text-sm font-medium text-black">
+                        Confirmation
+                        <span className="text-red"> *</span>
+                      </p>
+                      <label className="flex items-start gap-3 rounded-xl border border-gray-200 p-4">
+                        <input
+                          type="checkbox"
+                          checked={formData.consentAccepted}
+                          onChange={(event) =>
+                            handleInputChange(
+                              "consentAccepted",
+                              event.target.checked,
+                            )
+                          }
+                          className="mt-1 h-4 w-4 accent-blue-600"
+                        />
+                        <span className="text-sm text-gray-700">
+                          I confirm the information provided is correct and I
+                          agree to the consent statement above.
+                        </span>
+                      </label>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setStep(3)}
+                        className="flex-1 bg-transparent border rounded-lg py-3 hover:cursor-pointer"
+                      >
+                        Back
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleSubmit}
+                        className="flex-1 flex flex-row justify-center text-white bg-blue-600 text-lg group px-3 py-3 rounded-lg border-2 gap-1 hover:bg-blue-700 transition-colors hover:cursor-pointer disabled:opacity-50"
+                        disabled={loading}
+                      >
+                        <span>
+                          {loading ? "Submitting..." : "Submit Application"}
+                        </span>
+                        {!loading && (
+                          <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {message && (
+                  <p className="mt-6 text-center text-sm text-red">{message}</p>
+                )}
+
+                <p className="mt-6 text-xs text-gray-500 text-center">
+                  Your details and supporting documents are sent securely to our
+                  team for review.
                 </p>
-              </div>
+              </>
             )}
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function StepActions({
+  isFirstStep = false,
+  onBack,
+  onNext,
+}: {
+  isFirstStep?: boolean;
+  onBack?: () => void;
+  onNext: () => void;
+}) {
+  return (
+    <div className="flex gap-3">
+      {!isFirstStep && (
+        <button
+          type="button"
+          className="flex-1 bg-transparent border rounded-lg py-3 hover:cursor-pointer"
+          onClick={onBack}
+        >
+          Back
+        </button>
+      )}
+      <button
+        type="button"
+        className="flex-1 flex flex-row justify-center text-white bg-blue-600 text-lg group px-3 py-3 rounded-lg border-2 gap-1 hover:bg-blue-700 transition-colors hover:cursor-pointer"
+        onClick={onNext}
+      >
+        <span>Continue</span>
+        <ArrowRight className="h-5 w-5 mt-1 group-hover:translate-x-1 transition-transform" />
+      </button>
+    </div>
+  );
+}
+
+function StepHeader({
+  step,
+  title,
+  description,
+}: {
+  step: Step;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="grid gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+      <div>
+        <p className="text-sm font-medium uppercase tracking-[0.16em] text-blue-600">
+          Step {step} of 4
+        </p>
+        <h3 className="mt-2 text-xl font-semibold text-black">{title}</h3>
+        <p className="mt-2 text-gray-600">{description}</p>
+      </div>
+
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:justify-end lg:pb-0">
+        {[1, 2, 3, 4].map((currentStep) => (
+          <div key={currentStep} className="flex items-center gap-2">
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors shrink-0 ${
+                step >= currentStep
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+            >
+              {currentStep}
+            </div>
+            {currentStep < 4 && (
+              <div
+                className={`w-10 h-0.5 shrink-0 ${step > currentStep ? "bg-blue-600" : "bg-black/20"}`}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TextField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  required = false,
+  disabled = false,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  type?: string;
+  required?: boolean;
+  disabled?: boolean;
+}) {
+  const id = useId();
+
+  return (
+    <div className="space-y-2">
+      <label htmlFor={id} className="block text-sm font-medium text-black">
+        {label}
+        {required && <span className="text-red"> *</span>}
+      </label>
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        disabled={disabled}
+        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-400"
+      />
+    </div>
+  );
+}
+
+function TextAreaField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  required = false,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  required?: boolean;
+}) {
+  const id = useId();
+
+  return (
+    <div className="space-y-2">
+      <label htmlFor={id} className="block text-sm font-medium text-black">
+        {label}
+        {required && <span className="text-red"> *</span>}
+      </label>
+      <textarea
+        id={id}
+        rows={4}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+  );
+}
+
+function SelectField({
+  label,
+  value,
+  onChange,
+  options,
+  required = false,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: readonly string[];
+  required?: boolean;
+}) {
+  const id = useId();
+
+  return (
+    <div className="space-y-2">
+      <label htmlFor={id} className="block text-sm font-medium text-black">
+        {label}
+        {required && <span className="text-red"> *</span>}
+      </label>
+      <select
+        id={id}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function UploadField({
+  label,
+  helperText,
+  file,
+  onChange,
+  accept,
+  required = false,
+}: {
+  label: string;
+  helperText: string;
+  file: File | null;
+  onChange: (file: File | null) => void;
+  accept: string;
+  required?: boolean;
+}) {
+  const id = useId();
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onChange(event.target.files?.[0] ?? null);
+  };
+
+  return (
+    <div className="space-y-2">
+      <label htmlFor={id} className="block text-sm font-medium text-black">
+        {label}
+        {required && <span className="text-red"> *</span>}
+      </label>
+      <label
+        htmlFor={id}
+        className="flex min-h-29 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 px-4 py-5 text-center transition-colors hover:border-blue-500"
+      >
+        <Upload className="mb-3 h-6 w-6 text-blue-600" />
+        <span className="text-sm font-medium text-black">
+          {file ? file.name : "Click to upload"}
+        </span>
+        <span className="mt-1 text-xs text-gray-500">{helperText}</span>
+      </label>
+      <input
+        id={id}
+        type="file"
+        accept={accept}
+        onChange={handleFileChange}
+        className="hidden"
+      />
+    </div>
+  );
+}
+
+function ApplicantToggle({
+  title,
+  description,
+  checked,
+  onChange,
+}: {
+  title: string;
+  description: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) {
+  const id = useId();
+
+  return (
+    <div className="rounded-xl border border-gray-200 p-4">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="font-medium text-black">{title}</p>
+          <p className="text-sm text-gray-600">{description}</p>
+        </div>
+        <label
+          htmlFor={id}
+          className="flex items-center gap-2 text-sm text-black"
+        >
+          <span>{checked ? "No" : "Yes"}</span>
+          <input
+            id={id}
+            type="checkbox"
+            checked={checked}
+            onChange={(event) => onChange(event.target.checked)}
+            className="h-4 w-4 accent-blue-600"
+          />
+        </label>
+      </div>
+    </div>
+  );
+}
+
+function ApplicantCard({
+  title,
+  name,
+  idType,
+  file,
+  onNameChange,
+  onIdTypeChange,
+  onFileChange,
+}: {
+  title: string;
+  name: string;
+  idType: string;
+  file: File | null;
+  onNameChange: (value: string) => void;
+  onIdTypeChange: (value: string) => void;
+  onFileChange: (file: File | null) => void;
+}) {
+  return (
+    <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 space-y-4">
+      <h4 className="text-lg font-semibold text-black">{title}</h4>
+      <TextField
+        label={`${title} Name`}
+        value={name}
+        onChange={onNameChange}
+        placeholder={`${title} full name`}
+        required={true}
+      />
+      <div className="grid gap-4 md:grid-cols-2">
+        <SelectField
+          label={`ID Document Type (${title})`}
+          value={idType}
+          onChange={onIdTypeChange}
+          options={idDocumentOptions}
+        />
+        <UploadField
+          label={`ID Document (${title})`}
+          helperText="Driving Licence, Passport etc"
+          file={file}
+          onChange={onFileChange}
+          accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+          required={true}
+        />
+      </div>
+    </div>
+  );
+}
+
+function SummaryRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-start justify-between gap-4 border-b border-gray-200 pb-3 last:border-b-0 last:pb-0">
+      <span className="font-medium text-black">{label}</span>
+      <span className="text-right">{value}</span>
+    </div>
   );
 }

@@ -103,7 +103,7 @@ export function Reviews({ location }: ReviewsProps) {
     return (
       <section className="py-20 lg:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-          <p className="text-lg text-red-500">Error loading reviews: {error}</p>
+          <p className="text-lg text-red">Error loading reviews: {error}</p>
         </div>
       </section>
     );

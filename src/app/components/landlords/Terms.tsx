@@ -19,7 +19,7 @@ export default function Terms() {
               "Casual or short-term rental agreements are excluded from this promotion.",
             ].map((term, idx) => (
               <div key={idx} className="flex gap-2 p-2">
-                <span className="text-[#ad0000] font-bold shrink-0">•</span>
+                <span className="text-red font-bold shrink-0">•</span>
                 <p className="text-gray-700">{term}</p>
               </div>
             ))}
