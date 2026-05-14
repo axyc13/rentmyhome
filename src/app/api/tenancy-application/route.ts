@@ -3,7 +3,7 @@ import nodemailer from "nodemailer";
 import { PDFDocument, PDFFont, StandardFonts, rgb } from "pdf-lib";
 
 import {
-  FALLBACK_ADMIN_EMAIL,
+  FALLBACK_ADMIN_EMAIL as AUCKLAND_ADMIN_EMAIL,
   getPropertyManagerReferral,
   HAMILTON_OFFICE_EMAIL,
   TENANCY_LOCATIONS,
@@ -499,15 +499,19 @@ export async function POST(request: NextRequest) {
     const referredManager = getPropertyManagerReferral(
       application.referralManagerSlug,
     );
-    const adminRecipient = process.env.EMAIL_USER ?? FALLBACK_ADMIN_EMAIL;
-    const notificationRecipients = new Set<string>([adminRecipient]);
 
-    if (application.propertyLocation === "Hamilton") {
-      notificationRecipients.add(HAMILTON_OFFICE_EMAIL);
-    }
+    const notificationRecipients = new Set<string>();
 
     if (referredManager) {
       notificationRecipients.add(referredManager.email);
+    } else {
+      if (application.propertyLocation === "Hamilton") {
+        notificationRecipients.add(HAMILTON_OFFICE_EMAIL);
+      }
+
+      if (application.propertyLocation === "Auckland") {
+        notificationRecipients.add(AUCKLAND_ADMIN_EMAIL);
+      }
     }
 
     const pdfFilename = `tenancy-application-${
