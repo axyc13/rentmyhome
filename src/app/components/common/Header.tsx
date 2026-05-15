@@ -4,60 +4,62 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/logo.avif";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, Phone, X } from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
-  {
-    name: "For Tenants",
-    href: "/tenants",
-  },
-  { name: "For Landlords", href: "/landlords" },
+  { name: "Our Services", href: "/landlords" },
   { name: "About Us", href: "/aboutus" },
+  { name: "Landlord Hub", href: "/landlords" },
+  { name: "Tenant Hub", href: "/tenants" },
+  { name: "Contact", href: "#contact" },
 ];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const handleNavigation = (href: string) => {
+    if (!href.startsWith("#")) {
+      return;
+    }
+
+    const element = document.getElementById(href.slice(1));
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
-    <header className=" bg-white backdrop-blur-md border-b border-border">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        {/* Logo */}
+    <header className="sticky top-0 z-50 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.05)]">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <Image src={logo} alt="logo" className="w-30" />
+          <Image src={logo} alt="Rent My Home logo" className="w-25" />
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden lg:flex lg:items-center lg:gap-8">
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="text-sm font-medium text-black hover:underline transition-colors"
+              className="text-[0.95rem] font-medium text-black transition-colors hover:text-red"
               onClick={(e) => {
                 if (item.href.startsWith("#")) {
                   e.preventDefault();
-                  const element = document.getElementById(item.href.slice(1));
-                  if (element) {
-                    element.scrollIntoView({ behavior: "smooth" });
-                  }
+                  handleNavigation(item.href);
                 }
               }}
             >
               {item.name}
             </Link>
           ))}
+          <Link
+            href="/landlords"
+            className="rounded-xl bg-red px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-black"
+          >
+            Get Free Appraisal
+          </Link>
         </div>
 
-        {/* CTA */}
-        <div className="hidden lg:flex lg:items-center lg:gap-4">
-          <a className="flex items-center gap-2 text-sm text-black hover:underline transition-colors">
-            <Phone className="h-4 w-4" />
-            <span>+64 22 543 4533</span>
-          </a>
-        </div>
-
-        {/* Mobile menu button */}
         <button
           className="lg:hidden p-2 text-black"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -70,25 +72,19 @@ export function Header() {
         </button>
       </nav>
 
-      {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-border">
-          <div className="px-6 py-4 space-y-4">
+        <div className="border-t border-black/5 bg-white lg:hidden">
+          <div className="space-y-2 px-6 py-5">
             {navigation.map((item) => (
               <div key={item.name}>
                 <Link
                   href={item.href}
-                  className="block py-2 text-base font-medium text-black hover:text-black transition-colors"
+                  className="block py-2 text-base font-medium text-black transition-colors hover:text-red"
                   onClick={(e) => {
                     setMobileMenuOpen(false);
                     if (item.href.startsWith("#")) {
                       e.preventDefault();
-                      const element = document.getElementById(
-                        item.href.slice(1),
-                      );
-                      if (element) {
-                        element.scrollIntoView({ behavior: "smooth" });
-                      }
+                      handleNavigation(item.href);
                     }
                   }}
                 >
@@ -96,6 +92,16 @@ export function Header() {
                 </Link>
               </div>
             ))}
+
+            <div className="pt-3">
+              <Link
+                href="/landlords"
+                className="block rounded-xl bg-red px-5 py-3 text-center text-sm font-semibold text-white"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Get Free Appraisal
+              </Link>
+            </div>
           </div>
         </div>
       )}

@@ -31,9 +31,8 @@ export function Reviews({ location }: ReviewsProps) {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const url = location
-          ? `/api/reviews?location=${location}`
-          : "/api/reviews";
+        const resolvedLocation = location ?? "auckland";
+        const url = `/api/reviews?location=${resolvedLocation}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error("Failed to fetch reviews");
         const data = await response.json();
@@ -41,9 +40,13 @@ export function Reviews({ location }: ReviewsProps) {
         const fetchedReviews: Review[] = (data.reviews || []).map(
           (review: any, index: number) => ({
             id: index + 1,
-            name: review.author_name,
-            rating: review.rating,
-            text: review.text,
+            name: review.author_name ?? "Anonymous",
+            source: review.relative_time_description ?? "Google review",
+            rating:
+              typeof review.rating === "number"
+                ? Math.max(0, Math.min(5, review.rating))
+                : 5,
+            text: review.text ?? "",
           }),
         );
         setReviews(fetchedReviews);
@@ -120,69 +123,61 @@ export function Reviews({ location }: ReviewsProps) {
   }
 
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="bg-[#f5f1ee] py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
-            <h2 className="text-3xl lg:text-4xl font-serif font-bold text-foreground mt-3 mb-4">
-              What Our Clients Say
+            <p className="text-sm font-semibold uppercase tracking-[0.26em] text-red">
+              Testimonials
+            </p>
+            <h2 className="mt-3 mb-4 text-3xl font-serif font-bold text-foreground lg:text-[2.875rem]">
+              What Our Landlords Say
             </h2>
-            <p className="text-muted-foreground">
-              Real stories from landlords and tenants who've experienced Rent My
-              Home.
+            <p className="max-w-2xl text-black/60">
+              Real stories from landlords who have experienced Rent My Home.
             </p>
           </div>
         </div>
 
-        {/* Carousel */}
         <div className="relative flex items-center justify-center gap-4">
-          {/* Left arrow */}
           <button
             onClick={() => go(-1)}
-            className="z-10 shrink-0 w-10 h-10 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center hover:border-black transition-colors hover:cursor-pointer"
+            className="z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white shadow-sm transition-colors hover:cursor-pointer hover:border-red"
             aria-label="Previous review"
           >
             <ChevronLeft className="h-5 w-5 text-gray-600" />
           </button>
 
-          {/* Cards */}
           <div className="flex items-center justify-center gap-4 w-full overflow-hidden">
-            {/* Left ghost card — hidden on mobile */}
             <div
               onClick={() => go(-1)}
-              className="hidden md:flex justify-start w-64 shrink-0 opacity-40 scale-85 transition-all duration-500"
+              className="hidden w-64 shrink-0 justify-start opacity-40 transition-all duration-500 md:flex md:scale-[0.88]"
             >
               <ReviewCard review={reviews[getIndex(-1)]} />
             </div>
 
-            {/* Centre card */}
-            <div className="scale-70 lg:scale-100 flex justify-center shrink-0 w-full max-w-xl transition-all duration-500">
+            <div className="flex w-full max-w-xl shrink-0 justify-center transition-all duration-500 md:scale-[0.92] lg:scale-100">
               <ReviewCard review={reviews[current]} />
             </div>
 
-            {/* Right ghost card — hidden on mobile */}
             <div
               onClick={() => go(1)}
-              className="hidden md:flex justify-end w-64 shrink-0 opacity-40 scale-85 transition-all duration-500"
+              className="hidden w-64 shrink-0 justify-end opacity-40 transition-all duration-500 md:flex md:scale-[0.88]"
             >
               <ReviewCard review={reviews[getIndex(1)]} />
             </div>
           </div>
 
-          {/* Right arrow */}
           <button
             onClick={() => go(1)}
-            className="z-10 shrink-0 w-10 h-10 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center hover:border-black transition-colors hover:cursor-pointer"
+            className="z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white shadow-sm transition-colors hover:cursor-pointer hover:border-red"
             aria-label="Next review"
           >
             <ChevronRight className="h-5 w-5 text-gray-600" />
           </button>
         </div>
 
-        {/* Progress bar + dots */}
         <div className="mt-8 flex flex-col items-center gap-3">
-          {/* Dots */}
           <div className="flex gap-2">
             {reviews.map((_, i) => (
               <button
@@ -202,7 +197,7 @@ export function Reviews({ location }: ReviewsProps) {
           </div>
         </div>
 
-        <div className="flex items-center justify-center w-full mt-8 hover:cursor-pointer hover:underline">
+        <div className="mt-8 flex w-full items-center justify-center hover:cursor-pointer hover:underline">
           <Link
             target="_blank"
             href={

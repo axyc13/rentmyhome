@@ -1,16 +1,20 @@
 import { Header } from "../components/common/Header";
-import { Hero } from "../components/home/Hero";
-import { Appraisal } from "../components/common/Appraisal";
-import { Tenancy } from "../components/common/Tenancy";
+import { CTA } from "../components/home/CTA";
 import { Footer } from "../components/common/Footer";
+import Hero from "../components/home/Hero";
+import { Reviews } from "../components/home/Reviews";
+import { Stats } from "../components/home/Stats";
+import { WhyChoose } from "../components/home/WhyChoose";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main>
       <Header />
       <Hero />
-      <Tenancy />
-      <Appraisal />
+      <Stats />
+      <WhyChoose />
+      <CTA />
+      <Reviews />
       <Footer />
     </main>
   );

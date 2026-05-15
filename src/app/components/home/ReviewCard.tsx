@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Star, Quote } from "lucide-react";
+import { Star } from "lucide-react";
 
 interface Review {
   id: number;
@@ -11,25 +11,23 @@ interface Review {
 export function ReviewCard({ review }: { review: Review }) {
   const [expanded, setExpanded] = useState(false);
   const maxChars = 200;
-  const isLong = review.text.length > maxChars;
+  const safeText = review.text?.trim() || "";
+  const isLong = safeText.length > maxChars;
   const displayedText =
-    expanded || !isLong ? review.text : review.text.slice(0, maxChars) + "...";
+    expanded || !isLong ? safeText : safeText.slice(0, maxChars) + "...";
 
   return (
     <div
-      className={`bg-white rounded-2xl p-8 border transition-all duration-500 opacity-100 scale-100 w-80 lg:w-88 shrink-0 ${expanded ? "h-full" : "h-112"}`}
+      className={`w-80 shrink-0 rounded-[20px] border border-black/50 bg-white p-8 shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-all duration-500 ${expanded ? "h-full lg:w-[22rem]" : "h-[28rem] lg:w-[22rem]"}`}
     >
-      <Quote className="h-10 w-10 text-red mb-4" />
-      {/* Stars */}
       <div className="flex items-center gap-1 mb-4">
         {[...Array(5)].map((_, i) => (
           <Star
             key={i}
-            className={`h-5 w-5 ${i < review.rating ? "text-black" : "text-white"}`}
+            className={`h-5 w-5 ${i < review.rating ? "fill-red text-red" : "text-black/12"}`}
           />
         ))}
       </div>
-      {/* Review Text */}
       {displayedText.length === 0 ? (
         <p className="text-lg text-gray-500">No review message.</p>
       ) : (
@@ -45,7 +43,6 @@ export function ReviewCard({ review }: { review: Review }) {
           {expanded ? "Show less" : "Read more"}
         </button>
       )}
-      {/* Author */}
       <div className="flex items-center gap-4 mt-4">
         <div>
           <h4 className="font-semibold text-black capitalize">

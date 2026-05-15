@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { MapPin, Upload, CheckCircle2, ArrowRight } from "lucide-react";
 
@@ -23,6 +23,29 @@ export function Appraisal() {
     phone: "",
   };
   const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    const storedDraft = window.sessionStorage.getItem("home-appraisal-draft");
+
+    if (!storedDraft) {
+      return;
+    }
+
+    try {
+      const draft = JSON.parse(storedDraft) as {
+        address?: string;
+        suburb?: string;
+      };
+
+      setFormData((prev) => ({
+        ...prev,
+        address: prev.address || draft.address || "",
+        suburb: prev.suburb || draft.suburb || "",
+      }));
+    } catch {
+      window.sessionStorage.removeItem("home-appraisal-draft");
+    }
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
