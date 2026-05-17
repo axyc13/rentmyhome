@@ -605,7 +605,7 @@ export async function POST(request: NextRequest) {
     `;
 
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: "info@rentmyhome.co.nz",
       to: Array.from(notificationRecipients).join(", "),
       replyTo: application.email ?? undefined,
       subject: `New Tenancy Application - ${application.firstApplicantName ?? "Website Form"}`,

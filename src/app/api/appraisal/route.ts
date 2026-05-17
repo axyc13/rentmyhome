@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
 
     // Email content
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: "info@rentmyhome.co.nz",
       to: companyEmail,
       replyTo: email,
       subject: "New Appraisal Request",
