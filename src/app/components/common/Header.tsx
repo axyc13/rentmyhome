@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/logo.avif";
-import { Menu, Phone, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -15,8 +16,24 @@ const navigation = [
   { name: "Contact", href: "#contact" },
 ];
 
-export function Header() {
+type HeaderProps = {
+  onOpenAppraisalAction?: () => void;
+};
+
+export function Header({
+  onOpenAppraisalAction: onOpenAppraisal,
+}: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const router = useRouter();
+
+  const handleAppraisalClick = () => {
+    if (onOpenAppraisal) {
+      onOpenAppraisal();
+      return;
+    }
+
+    router.push("/landlords");
+  };
 
   const handleNavigation = (href: string) => {
     if (!href.startsWith("#")) {
@@ -52,12 +69,13 @@ export function Header() {
               {item.name}
             </Link>
           ))}
-          <Link
-            href="/landlords"
+          <button
+            type="button"
+            onClick={handleAppraisalClick}
             className="rounded-xl bg-red px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-black"
           >
             Get Free Appraisal
-          </Link>
+          </button>
         </div>
 
         <button
@@ -94,13 +112,16 @@ export function Header() {
             ))}
 
             <div className="pt-3">
-              <Link
-                href="/landlords"
+              <button
+                type="button"
                 className="block rounded-xl bg-red px-5 py-3 text-center text-sm font-semibold text-white"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleAppraisalClick();
+                }}
               >
                 Get Free Appraisal
-              </Link>
+              </button>
             </div>
           </div>
         </div>

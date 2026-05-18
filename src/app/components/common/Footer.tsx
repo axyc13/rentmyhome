@@ -22,8 +22,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-6 max-w-sm text-base leading-8 text-white/72">
-              You <span className="font-semibold text-red">own.</span>
-              <br />
+              You <span className="font-semibold text-red">own. </span>
               We <span className="font-semibold text-red">manage.</span>
               <br />
               Trusted by 300+ landlords across Auckland and Waikato with modern
@@ -75,7 +74,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:info@rentmyhome.co.nz"
+                  href="mailto:receptionauck@rentmyhome.co.nz"
                   className="flex items-center gap-3 transition-colors hover:text-white"
                 >
                   <Mail className="h-4 w-4" />
