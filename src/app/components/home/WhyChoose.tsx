@@ -33,9 +33,9 @@ export function WhyChoose() {
           {cards.map((card) => (
             <article
               key={card.title}
-              className="rounded-[20px] border border-black/5 bg-white p-8 shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:-translate-y-1.5"
+              className="rounded-[20px] border border-black/5 bg-white p-8 shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:-translate-y-1.5 hover:text-red"
             >
-              <h3 className="mt-3 text-lg lg:text-2xl font-serif font-bold text-black">
+              <h3 className="mt-3 text-lg lg:text-2xl font-serif font-bold text-black ">
                 {card.title}
               </h3>
               <p className="mt-4 text-sm lg:text-base leading-7 text-black/65">

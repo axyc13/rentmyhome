@@ -292,10 +292,10 @@ export function AppraisalPopup({
         <button
           type="button"
           onClick={closeAndReset}
-          className="absolute -right-2.5 -top-5.5 z-20 flex h-20.5 w-20.5 items-center justify-center rounded-full bg-black text-white shadow-lg transition-transform hover:scale-[1.02] hover:cursor-pointer"
+          className="absolute -right-2.5 -top-5.5 z-20 flex h-15 w-15 items-center justify-center rounded-full bg-black text-white shadow-lg transition-transform hover:scale-[1.02] hover:cursor-pointer"
           aria-label="Close appraisal popup"
         >
-          <X className="h-10 w-10" strokeWidth={3} />
+          <X className="h-5 w-5" strokeWidth={3} />
         </button>
 
         {step === "success" ? (
