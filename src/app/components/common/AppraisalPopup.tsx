@@ -8,6 +8,7 @@ type PopupStep = "location" | "details" | "contact" | "success";
 type AppraisalPopupProps = {
   isOpen: boolean;
   onClose: () => void;
+  skipLocationStep?: boolean;
   title?: string;
   periodLabel?: string;
   regionLabel?: string;
@@ -53,6 +54,15 @@ const propertyTypeOptions = [
 const bedroomOptions = ["1", "2", "3", "4", "5+"] as const;
 const bathroomOptions = ["1", "2", "3", "4", "5+"] as const;
 const parkingOptions = ["0", "1", "2", "3+"] as const;
+const locationOptions = [
+  { label: "Auckland", value: "auckland" },
+  { label: "Hamilton", value: "hamilton" },
+  { label: "Cambridge", value: "cambridge" },
+] as const;
+
+function normalizeSuburb(value?: string) {
+  return value?.trim().toLowerCase() || "auckland";
+}
 
 function FieldSelect({
   label,
@@ -115,6 +125,7 @@ function FieldInput({
 export function AppraisalPopup({
   isOpen,
   onClose,
+  skipLocationStep = false,
   title = "Median Market rent",
   periodLabel = "01 Jun 2025 - 30 Nov 2025",
   regionLabel = "Auckland",
@@ -129,7 +140,7 @@ export function AppraisalPopup({
   const [form, setForm] = useState<FormState>({
     ...DEFAULT_FORM,
     address: defaultAddress,
-    suburb: defaultSuburb,
+    suburb: normalizeSuburb(defaultSuburb),
   });
 
   useEffect(() => {
@@ -150,13 +161,18 @@ export function AppraisalPopup({
       return;
     }
 
+    const initialStep = skipLocationStep ? "details" : "location";
+    setStep(initialStep);
+    setMessage("");
+    setLoading(false);
+
     const storedDraft = window.sessionStorage.getItem("home-appraisal-draft");
 
     if (!storedDraft) {
       setForm((prev) => ({
         ...prev,
         address: defaultAddress,
-        suburb: defaultSuburb,
+        suburb: normalizeSuburb(defaultSuburb),
       }));
       return;
     }
@@ -170,12 +186,12 @@ export function AppraisalPopup({
       setForm((prev) => ({
         ...prev,
         address: draft.address || defaultAddress || prev.address,
-        suburb: draft.suburb || defaultSuburb || prev.suburb,
+        suburb: normalizeSuburb(draft.suburb || defaultSuburb || prev.suburb),
       }));
     } catch {
       window.sessionStorage.removeItem("home-appraisal-draft");
     }
-  }, [defaultAddress, defaultSuburb, isOpen]);
+  }, [defaultAddress, defaultSuburb, isOpen, skipLocationStep]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -197,13 +213,13 @@ export function AppraisalPopup({
   };
 
   const closeAndReset = () => {
-    setStep("location");
+    setStep(skipLocationStep ? "details" : "location");
     setLoading(false);
     setMessage("");
     setForm({
       ...DEFAULT_FORM,
       address: defaultAddress,
-      suburb: defaultSuburb,
+      suburb: normalizeSuburb(defaultSuburb),
     });
     onClose();
   };
@@ -373,12 +389,28 @@ export function AppraisalPopup({
                       onChange={(value) => updateField("address", value)}
                       placeholder="Property Address..."
                     />
-                    <FieldSelect
-                      label="Location"
-                      value={form.suburb}
-                      onChange={(value) => updateField("suburb", value)}
-                      options={["Auckland", "Hamilton", "Cambridge"]}
-                    />
+                    <div className="relative">
+                      <select
+                        value={form.suburb}
+                        onChange={(event) =>
+                          updateField("suburb", normalizeSuburb(event.target.value))
+                        }
+                        className="w-full appearance-none rounded-2xl border-2 border-[rgb(238_33_37/0.95)] bg-white px-5 py-5 pr-16 text-lg font-semibold text-black outline-none"
+                      >
+                        <option value="" disabled>
+                          Location
+                        </option>
+                        {locationOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown
+                        className="pointer-events-none absolute right-5 top-1/2 h-8 w-8 -translate-y-1/2 text-[rgb(238_33_37/0.95)]"
+                        strokeWidth={3}
+                      />
+                    </div>
                   </div>
 
                   {message ? (

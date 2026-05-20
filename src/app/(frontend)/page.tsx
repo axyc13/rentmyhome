@@ -14,21 +14,38 @@ import { AppraisalPopup } from "../components/common/AppraisalPopup";
 
 export default function Home() {
   const [isAppraisalPopupOpen, setIsAppraisalPopupOpen] = useState(false);
+  const [skipLocationStep, setSkipLocationStep] = useState(false);
+
+  const openDefaultAppraisal = () => {
+    setSkipLocationStep(false);
+    setIsAppraisalPopupOpen(true);
+  };
+
+  const openHeroAppraisal = () => {
+    setSkipLocationStep(true);
+    setIsAppraisalPopupOpen(true);
+  };
+
+  const closeAppraisal = () => {
+    setIsAppraisalPopupOpen(false);
+    setSkipLocationStep(false);
+  };
 
   return (
     <main>
-      <Header onOpenAppraisalAction={() => setIsAppraisalPopupOpen(true)} />
-      <Hero onOpenAppraisal={() => setIsAppraisalPopupOpen(true)} />
+      <Header onOpenAppraisalAction={openDefaultAppraisal} />
+      <Hero onOpenAppraisal={openHeroAppraisal} />
       <Stats />
       <Banner />
       <WhyChoose />
-      <CTA onOpenAppraisal={() => setIsAppraisalPopupOpen(true)} />
+      <CTA onOpenAppraisal={openDefaultAppraisal} />
       <Road />
       <Reviews />
       <Footer />
       <AppraisalPopup
         isOpen={isAppraisalPopupOpen}
-        onClose={() => setIsAppraisalPopupOpen(false)}
+        onClose={closeAppraisal}
+        skipLocationStep={skipLocationStep}
       />
     </main>
   );

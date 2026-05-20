@@ -97,7 +97,7 @@ export default function Hero({ onOpenAppraisal }: HeroProps) {
       "home-appraisal-draft",
       JSON.stringify({
         address,
-        suburb: location,
+        suburb: location.toLowerCase(),
       }),
     );
 

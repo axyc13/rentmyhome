@@ -11,7 +11,7 @@ const navigation = [
   { name: "Home", href: "/" },
   { name: "Our Services", href: "/landlords" },
   { name: "About Us", href: "/aboutus" },
-  { name: "Landlord Hub", href: "/landlords" },
+  { name: "Landlord Hub", href: "/" },
   { name: "Tenant Hub", href: "/tenants" },
   { name: "Contact", href: "#contact" },
 ];

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Road() {
   return (
-    <section className="relative min-h-screen flex items-center w-full overflow-hidden bg-red py-8">
+    <section className="relative h-fit lg:min-h-screen flex items-center w-full overflow-hidden bg-red py-16">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-linear-to-br from-black via-[#1b1b1b] to-red/20" />
         <div className="absolute inset-0 road-texture" />
@@ -37,7 +37,7 @@ export function Road() {
             Hit The Road To <span className="text-red">0%</span> Fees.*
           </h2>
 
-          <p className="mx-auto mb-10 max-w-2xl text-base leading-relaxed text-white/80">
+          <p className="mx-auto mb-10 max-w-4xl text-base leading-relaxed text-white/80">
             We love supporting ambitious Kiwi investors who are doing the hard
             yards to build a legacy. Sign up 4 properties with RMH, and we will
             manage your 5th with a 0% management fee.
