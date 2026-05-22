@@ -39,7 +39,6 @@ export default function Home() {
       <Banner />
       <WhyChoose />
       <CTA onOpenAppraisal={openDefaultAppraisal} />
-      <Road />
       <Reviews />
       <Footer />
       <AppraisalPopup
