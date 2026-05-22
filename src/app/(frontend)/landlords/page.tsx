@@ -8,7 +8,6 @@ export default function Landlords() {
     <main className="min-h-screen">
       <Header />
       <ZeroPercent />
-      <Appraisal />
       <Footer />
     </main>
   );

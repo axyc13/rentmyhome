@@ -10,7 +10,6 @@ export default function page() {
       <Header />
       <Page />
       <PropertyManagers />
-      <Appraisal />
       <Footer />
     </main>
   );

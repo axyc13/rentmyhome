@@ -13,7 +13,6 @@ export default function Waikato() {
       <Hero />
       <Reviews location="waikato" />
       <Tenancy />
-      <Appraisal />
       <Footer />
     </div>
   );

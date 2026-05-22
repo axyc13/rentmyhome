@@ -13,7 +13,6 @@ export default function Auckland() {
       <Hero />
       <Reviews location="auckland" />
       <Tenancy />
-      <Appraisal />
       <Footer />
     </div>
   );
