@@ -1,58 +1,59 @@
-import { useState } from "react";
-import { Star, Quote } from "lucide-react";
+import { ExternalLink, Star } from "lucide-react";
 
-interface Review {
+export interface Review {
   id: number;
   name: string;
   rating: number;
   text: string;
 }
 
-export function ReviewCard({ review }: { review: Review }) {
-  const [expanded, setExpanded] = useState(false);
-  const maxChars = 200;
-  const isLong = review.text.length > maxChars;
-  const displayedText =
-    expanded || !isLong ? review.text : review.text.slice(0, maxChars) + "...";
+type ReviewCardProps = {
+  review: Review;
+  href: string;
+};
 
+export function ReviewCard({ review, href }: ReviewCardProps) {
   return (
-    <div
-      className={`bg-white rounded-2xl p-8 border transition-all duration-500 opacity-100 scale-100 w-80 lg:w-88 shrink-0 ${expanded ? "h-full" : "h-112"}`}
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex h-full min-h-60 lg:min-h-80 flex-col rounded-3xl border border-black/8 bg-white p-7 shadow-[0_12px_30px_rgba(0,0,0,0.02)] transition-transform duration-300 hover:-translate-y-1.5"
+      aria-label={`Read ${review.name}'s Google review`}
     >
-      <Quote className="h-10 w-10 text-red mb-4" />
-      {/* Stars */}
-      <div className="flex items-center gap-1 mb-4">
-        {[...Array(5)].map((_, i) => (
-          <Star
-            key={i}
-            className={`h-5 w-5 ${i < review.rating ? "text-black" : "text-white"}`}
-          />
-        ))}
-      </div>
-      {/* Review Text */}
-      {displayedText.length === 0 ? (
-        <p className="text-lg text-gray-500">No review message.</p>
-      ) : (
-        <p className="text-black text-base leading-relaxed mb-2">
-          {displayedText}
-        </p>
-      )}
-      {isLong && (
-        <button
-          className="text-primary text-sm underline mb-6"
-          onClick={() => setExpanded((prev) => !prev)}
-        >
-          {expanded ? "Show less" : "Read more"}
-        </button>
-      )}
-      {/* Author */}
-      <div className="flex items-center gap-4 mt-4">
-        <div>
-          <h4 className="font-semibold text-black capitalize">
-            {review.name.toLowerCase()}
-          </h4>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f1f3f4] text-base font-bold text-black">
+            {review.name.charAt(0)}
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-black">{review.name}</h3>
+            <p className="text-sm text-black/50">Google review</p>
+          </div>
+        </div>
+
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f8f9fa] text-black/55 transition-colors group-hover:text-red">
+          <ExternalLink className="h-4 w-4" />
         </div>
       </div>
-    </div>
+
+      <div className="mt-5 flex items-center gap-1">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Star
+            key={index}
+            className={`h-4 w-4 ${
+              index < review.rating ? "fill-red text-red" : "text-black/10"
+            }`}
+          />
+        ))}
+        <span className="ml-2 text-sm font-medium text-black/55">
+          {review.rating}.0
+        </span>
+      </div>
+
+      <p className="mt-5 line-clamp-6 text-xs lg:text-base leading-7 text-black/72">
+        {review.text}
+      </p>
+    </a>
   );
 }

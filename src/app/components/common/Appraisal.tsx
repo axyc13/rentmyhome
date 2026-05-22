@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { MapPin, Upload, CheckCircle2, ArrowRight } from "lucide-react";
 
@@ -23,6 +23,29 @@ export function Appraisal() {
     phone: "",
   };
   const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    const storedDraft = window.sessionStorage.getItem("home-appraisal-draft");
+
+    if (!storedDraft) {
+      return;
+    }
+
+    try {
+      const draft = JSON.parse(storedDraft) as {
+        address?: string;
+        suburb?: string;
+      };
+
+      setFormData((prev) => ({
+        ...prev,
+        address: prev.address || draft.address || "",
+        suburb: prev.suburb || draft.suburb || "",
+      }));
+    } catch {
+      window.sessionStorage.removeItem("home-appraisal-draft");
+    }
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
@@ -183,8 +206,7 @@ export function Appraisal() {
                           Select location
                         </option>
                         <option value="auckland">Auckland</option>
-                        <option value="hamilton">Hamilton</option>
-                        <option value="cambridge">Cambridge</option>
+                        <option value="waikato">Waikato</option>
                       </select>
                     </div>
 
@@ -432,9 +454,8 @@ export function Appraisal() {
         </div>
         <p className=" text-sm text-white/75 leading-relaxed">
           RMH Property Management provides residential property management in
-          Auckland and Hamilton (Waikato region). Trusted by over 300 landlords,
-          we focus on reliable service, clear communication, and consistent
-          management.
+          Auckland and Waikato. Trusted by over 300 landlords, we focus on
+          reliable service, clear communication, and consistent management.
         </p>
       </div>
     </section>

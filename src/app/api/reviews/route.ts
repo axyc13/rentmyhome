@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const location = searchParams.get("location");
+    const location = searchParams.get("location") ?? "auckland";
 
     const apiKey = process.env.GOOGLE_PLACES_API_KEY;
     let placeId: string | undefined;

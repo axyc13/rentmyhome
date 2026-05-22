@@ -1,4 +1,4 @@
-export const TENANCY_LOCATIONS = ["Auckland", "Hamilton"] as const;
+export const TENANCY_LOCATIONS = ["Auckland", "Waikato"] as const;
 
 export type TenancyLocation = (typeof TENANCY_LOCATIONS)[number];
 
@@ -31,7 +31,7 @@ export const referrals: PropertyManagerReferral[] = [
   },
 ];
 
-export const HAMILTON_OFFICE_EMAIL = "admin@rentmyhome.co.nz";
+export const WAIKATO_OFFICE_EMAIL = "admin@rentmyhome.co.nz";
 export const FALLBACK_ADMIN_EMAIL = "admin@acuberentals.com";
 
 export function getPropertyManagerReferral(slug: string | null | undefined) {
@@ -54,7 +54,7 @@ export function getDefaultLocationForPathname(
   }
 
   if (pathname === "/waikato") {
-    return "Hamilton";
+    return "Waikato";
   }
 
   return "";

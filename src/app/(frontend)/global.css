@@ -2,30 +2,23 @@
 
 /* Brand red scale: lighter tints at 50-400, base accents at 500-700, darker tones at 800-950. */
 @theme {
-  --color-red: #ad0000;
-  --color-red-50: #fff5f5;
-  --color-red-100: #ffe7e7;
-  --color-red-200: #ffcfcf;
-  --color-red-300: #ffabab;
-  --color-red-400: #ff8282;
-  --color-red-500: #e45151;
-  --color-red-600: #c42525;
-  --color-red-700: #ad0000;
-  --color-red-800: #8f0000;
-  --color-red-900: #700000;
-  --color-red-950: #4d0000;
+  --color-red: #ee2125;
+  --color-red-50: #fff3f3;
+  --color-red-100: #ffe3e4;
+  --color-red-200: #ffc8ca;
+  --color-red-300: #ff9ea1;
+  --color-red-400: #ff6e73;
+  --color-red-500: #f34347;
+  --color-red-600: #ee2125;
+  --color-red-700: #ca1216;
+  --color-red-800: #a71417;
+  --color-red-900: #8b181a;
+  --color-red-950: #4c0608;
 }
 
 :root {
-  --background: #ad0000;
-  --foreground: #1b1b1b;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #1b1b1b;
+  --foreground: #f9fdfe;
 }
 
 body {
@@ -35,11 +28,15 @@ body {
 }
 
 .text-red {
-  color: #ad0000;
+  color: #ee2125;
+}
+
+.text-white {
+  color: #f9fdfe;
 }
 
 .bg-red {
-  background: #ad0000;
+  background: #ee2125;
 }
 
 .bg-white {
