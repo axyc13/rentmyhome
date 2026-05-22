@@ -56,8 +56,7 @@ const bathroomOptions = ["1", "2", "3", "4", "5+"] as const;
 const parkingOptions = ["0", "1", "2", "3+"] as const;
 const locationOptions = [
   { label: "Auckland", value: "auckland" },
-  { label: "Hamilton", value: "hamilton" },
-  { label: "Cambridge", value: "cambridge" },
+  { label: "Waikato", value: "waikato" },
 ] as const;
 
 function normalizeSuburb(value?: string) {
@@ -393,7 +392,10 @@ export function AppraisalPopup({
                       <select
                         value={form.suburb}
                         onChange={(event) =>
-                          updateField("suburb", normalizeSuburb(event.target.value))
+                          updateField(
+                            "suburb",
+                            normalizeSuburb(event.target.value),
+                          )
                         }
                         className="w-full appearance-none rounded-2xl border-2 border-[rgb(238_33_37/0.95)] bg-white px-5 py-5 pr-16 text-lg font-semibold text-black outline-none"
                       >

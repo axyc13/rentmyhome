@@ -72,7 +72,7 @@ export function Header({
           <button
             type="button"
             onClick={handleAppraisalClick}
-            className="rounded-xl bg-red px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-black"
+            className="rounded-xl bg-[#ee2125] hover:cursor-pointer hover:bg-black px-5 py-3 text-sm font-semibold text-white transition-colors"
           >
             Get Free Appraisal
           </button>

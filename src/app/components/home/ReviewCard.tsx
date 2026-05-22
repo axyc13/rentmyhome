@@ -18,7 +18,7 @@ export function ReviewCard({ review, href }: ReviewCardProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex h-full min-h-60 lg:min-h-80 flex-col rounded-3xl border border-black/8 bg-white p-7 shadow-[0_12px_30px_rgba(0,0,0,0.06)] transition-transform duration-300 hover:-translate-y-1.5"
+      className="group flex h-full min-h-60 lg:min-h-80 flex-col rounded-3xl border border-black/8 bg-white p-7 shadow-[0_12px_30px_rgba(0,0,0,0.02)] transition-transform duration-300 hover:-translate-y-1.5"
       aria-label={`Read ${review.name}'s Google review`}
     >
       <div className="flex items-start justify-between gap-4">

@@ -23,7 +23,7 @@ export function CTA({ onOpenAppraisal }: CTAProps) {
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto text-center">
           <h2 className="text-4xl font-serif font-bold text-white lg:text-5xl">
-            No Hassle. No Surprises. Just Results.
+            Get Your Free Investor Guide
           </h2>
           <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-white/85">
             Let's find out what your property could be earning in today's

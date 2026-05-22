@@ -5,7 +5,7 @@ import { PDFDocument, PDFFont, StandardFonts, rgb } from "pdf-lib";
 import {
   FALLBACK_ADMIN_EMAIL as AUCKLAND_ADMIN_EMAIL,
   getPropertyManagerReferral,
-  HAMILTON_OFFICE_EMAIL,
+  WAIKATO_OFFICE_EMAIL,
   TENANCY_LOCATIONS,
   type TenancyLocation,
 } from "@/src/app/lib/tenancy-routing";
@@ -505,8 +505,8 @@ export async function POST(request: NextRequest) {
     if (referredManager) {
       notificationRecipients.add(referredManager.email);
     } else {
-      if (application.propertyLocation === "Hamilton") {
-        notificationRecipients.add(HAMILTON_OFFICE_EMAIL);
+      if (application.propertyLocation === "Waikato") {
+        notificationRecipients.add(WAIKATO_OFFICE_EMAIL);
       }
 
       if (application.propertyLocation === "Auckland") {

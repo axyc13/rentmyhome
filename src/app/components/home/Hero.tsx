@@ -67,8 +67,7 @@ function AppraisalCard({
           className="w-full rounded-xl border border-black/10 px-4 py-4 text-base text-black outline-none"
         >
           <option value="auckland">Auckland</option>
-          <option value="hamilton">Hamilton</option>
-          <option value="cambridge">Cambridge</option>
+          <option value="waikato">Waikato</option>
         </select>
 
         <button
