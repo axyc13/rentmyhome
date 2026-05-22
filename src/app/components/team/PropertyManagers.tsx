@@ -5,7 +5,7 @@ import { referrals } from "@/src/app/lib/tenancy-routing";
 
 export default function PropertyManagers() {
   return (
-    <section className="bg-white w-screen p-16">
+    <section className="bg-white w-screen px-8 py-16 max-w-7xl mx-auto">
       <div className="grid grid-cols-2 gap-8">
         {referrals.map((manager) => (
           <div
