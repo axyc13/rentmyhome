@@ -12,7 +12,7 @@ const valuePoints = [
 export default function Banner() {
   return (
     <div>
-      <section className="bg-[#f3f6f7] py-20">
+      <section className="bg-white md:bg-[#f3f6f7] py-20">
         <div className="hidden lg:flex mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8 items-center">
             <article className="border border-gray-50 rounded-[20px] shadow-[0_10px_30px_rgba(0,0,0,0.06)] bg-white p-8 lg:p-10">
