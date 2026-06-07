@@ -9,11 +9,11 @@ import { Menu, X } from "lucide-react";
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Our Services", href: "/landlords" },
-  { name: "About Us", href: "/aboutus" },
-  { name: "Landlord Hub", href: "/" },
+  { name: "Our Services", href: "/services" },
+  { name: "About Us", href: "/about" },
+  { name: "Landlord Hub", href: "/team" },
   { name: "Tenant Hub", href: "/tenants" },
-  { name: "Contact", href: "#contact" },
+  { name: "Contact", href: "/contact" },
 ];
 
 type HeaderProps = {

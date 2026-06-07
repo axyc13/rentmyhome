@@ -7,7 +7,6 @@ export default function Landlords() {
   return (
     <main className="min-h-screen">
       <Header />
-      <Hero />
       <Tenancy />
       <Footer />
     </main>

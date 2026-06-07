@@ -87,6 +87,17 @@ export function Footer() {
         </div>
 
         <div className="mt-14 border-t border-white/10 pt-6 text-center text-sm text-white/45">
+          <div className="flex justify-center gap-6 mb-3">
+            <Link href="/privacy" className="hover:text-white/75 transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-white/75 transition-colors">
+              Terms of Use
+            </Link>
+            <Link href="/faq" className="hover:text-white/75 transition-colors">
+              FAQ
+            </Link>
+          </div>
           © 2026 Rent My Home. All Rights Reserved.
         </div>
       </div>
