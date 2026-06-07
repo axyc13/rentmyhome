@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { AppraisalProvider } from "../components/common/AppraisalProvider";
 import "./global.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,7 +27,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${playfair.variable} font-sans antialiased`}
       >
-        {children}
+        <AppraisalProvider>{children}</AppraisalProvider>
       </body>
     </html>
   );

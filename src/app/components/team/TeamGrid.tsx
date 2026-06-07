@@ -33,7 +33,7 @@ const members = [
 
 export default function TeamGrid() {
   return (
-    <section id="team" className="pb-27.5 scroll-mt-20">
+    <section id="team" className="py-30 scroll-mt-20">
       <div className="mx-auto w-[90%] max-w-325">
         {/* section-title */}
         <div className="text-center mb-17.5">

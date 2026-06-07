@@ -59,7 +59,7 @@ export default function ContactHero() {
   };
 
   const inputClass =
-    "w-full px-5.5 py-4.5 border border-[#e4e4e4] rounded-[14px] text-[15px] bg-[#fafafa] outline-none transition-colors focus:border-red focus:bg-white placeholder-[#999]";
+    "w-full px-5.5 py-4.5 border border-[#e4e4e4] rounded-[14px] text-[15px] bg-white outline-none transition-colors focus:border-red focus:bg-white placeholder-[#999]";
 
   return (
     <section className="pt-30 pb-20 relative overflow-hidden">
@@ -83,9 +83,8 @@ export default function ContactHero() {
             CONTACT RENT MY HOME
           </h4>
           <h1 className="font-serif font-bold text-black leading-[1.05] mb-7.5 text-[42px] sm:text-[58px] lg:text-[72px]">
-            LET&apos;S <span className="text-red">TALK.</span>
-            <br />
-            WE&apos;RE <span className="text-red">READY.</span>
+            Let&apos;s <span className="text-red">Talk. </span>
+            We&apos;re <span className="text-red">Ready.</span>
           </h1>
           <p className="text-[#555] leading-loose text-lg mb-10 max-w-162.5">
             Whether you&apos;re a landlord looking for stress-free property
@@ -121,8 +120,8 @@ export default function ContactHero() {
                   Message Sent!
                 </h2>
                 <p className="text-[#666] leading-[1.8] mb-8">
-                  Thanks for reaching out. We&apos;ll get back to you as
-                  quickly as possible.
+                  Thanks for reaching out. We&apos;ll get back to you as quickly
+                  as possible.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}

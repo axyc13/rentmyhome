@@ -2,14 +2,14 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="bg-white pt-30 pb-22.5">
+    <section className="bg-white pt-30 pb-20">
       <div className="mx-auto w-[90%] max-w-325 flex flex-col lg:flex-row items-center justify-between gap-17.5">
         {/* Left */}
         <div className="flex-1">
           <h4 className="text-[15px] text-red tracking-[2px] mb-5">OUR TEAM</h4>
           <h1 className="font-serif font-bold text-black leading-[1.05] mb-7 text-[44px] sm:text-[58px] lg:text-[78px]">
-            REAL <span className="text-red">PEOPLE. </span>
-            REAL <span className="text-red">SUPPORT.</span>
+            Real <span className="text-red">People. </span>
+            Real <span className="text-red">Support.</span>
           </h1>
           <p className="text-[#555] leading-loose text-lg mb-10 max-w-162.5">
             Behind every property we manage is a team that genuinely cares about

@@ -2,6 +2,7 @@
 
 import React, { FormEvent, useState } from "react";
 import Image from "next/image";
+import { useAppraisal } from "../common/AppraisalProvider";
 import dedicated from "@/public/dedicatedSupport.png";
 import mile from "@/public/extraMile.png";
 import seven from "@/public/sevenDay.png";
@@ -81,13 +82,10 @@ function AppraisalCard({
   );
 }
 
-type HeroProps = {
-  onOpenAppraisal: () => void;
-};
-
-export default function Hero({ onOpenAppraisal }: HeroProps) {
+export default function Hero() {
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState("auckland");
+  const { open } = useAppraisal();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -100,7 +98,7 @@ export default function Hero({ onOpenAppraisal }: HeroProps) {
       }),
     );
 
-    onOpenAppraisal();
+    open(true);
   };
 
   return (
@@ -121,9 +119,9 @@ export default function Hero({ onOpenAppraisal }: HeroProps) {
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-16">
             <div className="max-w-3xl">
               <h1 className="text-4xl font-serif font-bold tracking-tight text-black sm:text-6xl lg:text-[4.5rem] lg:leading-[1.05]">
-                YOU <span className="text-red">OWN.</span>
+                You <span className="text-red">Own.</span>
                 <br />
-                WE <span className="text-red">MANAGE...</span>
+                We <span className="text-red">Manage.</span>
               </h1>
               <p className="mt-6 hidden max-w-2xl text-lg text-black/80 lg:flex">
                 Residential property management specialists across Auckland and

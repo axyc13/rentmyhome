@@ -12,9 +12,9 @@ export default function Hero() {
               OUR STORY
             </h4>
             <h1 className="font-serif font-bold text-black leading-[1.05] mb-7 text-[46px] sm:text-[58px] lg:text-[78px]">
-              YOU <span className="text-red">OWN.</span>
+              You <span className="text-red">Own. </span>
               <br />
-              WE <span className="text-red">MANAGE.</span>
+              We <span className="text-red">Manage.</span>
             </h1>
             <p className="text-[#555] leading-loose text-lg mb-10">
               Built from long days, nonstop calls, and real relationships — Rent

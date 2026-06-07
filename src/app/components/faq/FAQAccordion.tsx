@@ -41,8 +41,8 @@ export default function FAQAccordion() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section className="bg-white py-25">
-      <div className="mx-auto w-[90%] max-w-312.5">
+    <section className="bg-white py-30">
+      <div className="mx-auto w-[90%] max-w-325">
 
         {/* section-title */}
         <div className="text-center mb-17.5">

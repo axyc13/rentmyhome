@@ -55,8 +55,8 @@ function UL({ items }: { items: string[] }) {
 
 export default function TermsPage() {
   return (
-    <section className="bg-white py-25">
-      <div className="mx-auto w-[90%] max-w-312.5">
+    <section className="bg-white py-30">
+      <div className="mx-auto w-[90%] max-w-325">
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-15 items-start">
 
           {/* Sidebar */}

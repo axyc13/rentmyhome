@@ -1,7 +1,7 @@
 export default function StoryCTA() {
   return (
     <section
-      className="py-27.5 max-sm:py-20 text-white text-center"
+      className="py-30 text-white text-center"
       style={{
         background:
           "linear-gradient(rgba(239,43,45,0.9),rgba(239,43,45,0.9)), url('/building.jpg') center/cover no-repeat",

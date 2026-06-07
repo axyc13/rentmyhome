@@ -23,7 +23,7 @@ const steps = [
 
 export default function Timeline() {
   return (
-    <section className="bg-white py-27.5 max-sm:py-20">
+    <section className="bg-white py-30">
       <div className="mx-auto w-[90%] max-w-325">
         {/* section-title */}
         <div className="text-center mb-17.5">

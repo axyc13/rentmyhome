@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Review, ReviewCard } from "./ReviewCard";
 
 interface ReviewsProps {
@@ -60,8 +60,11 @@ const AUCKLAND_REVIEW_URL =
 const WAIKATO_REVIEW_URL =
   "https://www.google.com/maps/place/Rentmyhome/@-37.7844256,175.2806003,15z/data=!4m15!1m8!3m7!1s0xa1165f09cdcd46e5:0x2618d7db17924dcd!2sRentmyhome!8m2!3d-37.7844256!4d175.2806003!10e5!16s%2Fg%2F11wnls_710!3m5!1s0xa1165f09cdcd46e5:0x2618d7db17924dcd!8m2!3d-37.7844256!4d175.2806003!16s%2Fg%2F11wnls_710?entry=ttu";
 
+const AUTOPLAY_INTERVAL = 4000;
+
 export function Reviews({ location }: ReviewsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   const reviewUrl =
     location === "waikato" ? WAIKATO_REVIEW_URL : AUCKLAND_REVIEW_URL;
@@ -72,15 +75,21 @@ export function Reviews({ location }: ReviewsProps) {
     });
   }, [activeIndex]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setActiveIndex((prev) => (prev + 1) % STATIC_REVIEWS.length);
-  };
+  }, []);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     setActiveIndex(
       (prev) => (prev - 1 + STATIC_REVIEWS.length) % STATIC_REVIEWS.length,
     );
-  };
+  }, []);
+
+  useEffect(() => {
+    if (paused) return;
+    const timer = setInterval(handleNext, AUTOPLAY_INTERVAL);
+    return () => clearInterval(timer);
+  }, [paused, handleNext]);
 
   return (
     <section className="bg-white py-20 lg:py-28">
@@ -110,7 +119,11 @@ export function Reviews({ location }: ReviewsProps) {
           </Link>
         </div>
 
-        <div className="relative">
+        <div
+          className="relative"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
           <button
             type="button"
             onClick={handlePrev}

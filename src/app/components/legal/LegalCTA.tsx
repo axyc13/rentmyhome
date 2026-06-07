@@ -7,13 +7,13 @@ type Props = {
 export default function LegalCTA({ title, description, buttonLabel }: Props) {
   return (
     <section
-      className="py-27.5 text-white text-center"
+      className="py-30 text-white text-center"
       style={{
         background:
           "linear-gradient(rgba(239,43,45,0.92),rgba(239,43,45,0.92)), url('/building.jpg') center/cover no-repeat",
       }}
     >
-      <div className="mx-auto w-[90%] max-w-312.5">
+      <div className="mx-auto w-[90%] max-w-325">
         <h2 className="font-serif font-bold text-[40px] sm:text-[58px] leading-[1.15] mb-5.5">
           {title}
         </h2>

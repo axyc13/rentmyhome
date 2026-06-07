@@ -1,6 +1,6 @@
 export default function FounderMessage() {
   return (
-    <section className="pb-27.5">
+    <section className="py-30">
       <div className="mx-auto w-[90%] max-w-325">
         <div className="relative overflow-hidden bg-black text-white rounded-[35px] p-10 sm:p-17.5 flex flex-col lg:flex-row gap-20 items-start">
 

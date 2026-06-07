@@ -23,7 +23,7 @@ const values = [
 
 export default function TeamValues() {
   return (
-    <section className="bg-[#f8f8f8] py-27.5">
+    <section className="bg-[#f8f8f8] py-30">
       <div className="mx-auto w-[90%] max-w-325">
 
         <div className="text-center mb-17.5">

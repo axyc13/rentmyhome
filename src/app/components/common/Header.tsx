@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/logo.avif";
 import { Menu, X } from "lucide-react";
+import { useAppraisal } from "./AppraisalProvider";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -16,35 +16,9 @@ const navigation = [
   { name: "Contact", href: "/contact" },
 ];
 
-type HeaderProps = {
-  onOpenAppraisalAction?: () => void;
-};
-
-export function Header({
-  onOpenAppraisalAction: onOpenAppraisal,
-}: HeaderProps) {
+export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const router = useRouter();
-
-  const handleAppraisalClick = () => {
-    if (onOpenAppraisal) {
-      onOpenAppraisal();
-      return;
-    }
-
-    router.push("/landlords");
-  };
-
-  const handleNavigation = (href: string) => {
-    if (!href.startsWith("#")) {
-      return;
-    }
-
-    const element = document.getElementById(href.slice(1));
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
+  const { open } = useAppraisal();
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-[0_2px_15px_rgba(0,0,0,0.05)]">
@@ -59,19 +33,13 @@ export function Header({
               key={item.name}
               href={item.href}
               className="text-[0.95rem] font-medium text-black transition-colors hover:text-red"
-              onClick={(e) => {
-                if (item.href.startsWith("#")) {
-                  e.preventDefault();
-                  handleNavigation(item.href);
-                }
-              }}
             >
               {item.name}
             </Link>
           ))}
           <button
             type="button"
-            onClick={handleAppraisalClick}
+            onClick={() => open()}
             className="rounded-xl bg-[#ee2125] hover:cursor-pointer hover:bg-black px-5 py-3 text-sm font-semibold text-white transition-colors"
           >
             Get Free Appraisal
@@ -98,13 +66,7 @@ export function Header({
                 <Link
                   href={item.href}
                   className="block py-2 text-base font-medium text-black transition-colors hover:text-red"
-                  onClick={(e) => {
-                    setMobileMenuOpen(false);
-                    if (item.href.startsWith("#")) {
-                      e.preventDefault();
-                      handleNavigation(item.href);
-                    }
-                  }}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
                 </Link>
@@ -114,10 +76,10 @@ export function Header({
             <div className="pt-3">
               <button
                 type="button"
-                className="block rounded-xl bg-red px-5 py-3 text-center text-sm font-semibold text-white"
+                className="block rounded-xl bg-red px-5 py-3 text-center text-sm font-semibold text-white hover:cursor-pointer"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  handleAppraisalClick();
+                  open();
                 }}
               >
                 Get Free Appraisal

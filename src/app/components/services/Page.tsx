@@ -150,7 +150,7 @@ export default function Page() {
             </div>
             <div className="flex justify-center">
               <a
-                href="#"
+                href="/contact"
                 className=" bg-red  w-fit text-white font-semibold px-8 py-4 rounded-xl hover:opacity-90 transition-opacity"
               >
                 Talk To Our Team
