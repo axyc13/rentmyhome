@@ -1,23 +1,20 @@
+import type { Metadata } from "next";
 import { Header } from "@/src/app/components/common/Header";
 import { Footer } from "@/src/app/components/common/Footer";
-import Hero from "@/src/app/components/about/Hero";
-import Timeline from "@/src/app/components/about/Timeline";
-import Values from "@/src/app/components/about/Values";
+import Page from "@/src/app/components/services/Page";
 import StoryCTA from "@/src/app/components/about/StoryCTA";
 
-export const metadata = {
-  title: "Our Story | Rent My Home",
+export const metadata: Metadata = {
+  title: "About Us | Rent My Home",
   description:
-    "Learn how Rent My Home was built from the ground up to give Kiwi landlords the communication and support they deserve.",
+    "Learn who we are and what drives Rent My Home — trusted by 300+ landlords across Auckland and Waikato.",
 };
 
-export default function StoryPage() {
+export default function AboutPage() {
   return (
     <main className="min-h-screen bg-white">
       <Header />
-      <Hero />
-      <Timeline />
-      <Values />
+      <Page />
       <StoryCTA />
       <Footer />
     </main>

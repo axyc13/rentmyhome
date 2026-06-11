@@ -4,20 +4,35 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/logo.avif";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { useAppraisal } from "./AppraisalProvider";
 
-const navigation = [
+type NavItem = {
+  name: string;
+  href: string;
+  dropdown?: { name: string; href: string }[];
+};
+
+const navigation: NavItem[] = [
   { name: "Home", href: "/" },
+  {
+    name: "About Us",
+    href: "/about",
+    dropdown: [
+      { name: "Our Story", href: "/story" },
+      { name: "Our Team", href: "/team" },
+    ],
+  },
   { name: "Our Services", href: "/services" },
-  { name: "About Us", href: "/about" },
-  { name: "Landlord Hub", href: "/team" },
+  { name: "Landlord Hub", href: "/landlords-archive" },
   { name: "Tenant Hub", href: "/tenants" },
+  { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/contact" },
 ];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { open } = useAppraisal();
 
   return (
@@ -27,16 +42,50 @@ export function Header() {
           <Image src={logo} alt="Rent My Home logo" className="w-25" />
         </Link>
 
+        {/* Desktop nav */}
         <div className="hidden lg:flex lg:items-center lg:gap-8">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="text-[0.95rem] font-medium text-black transition-colors hover:text-red"
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navigation.map((item) =>
+            item.dropdown ? (
+              <div
+                key={item.name}
+                className="relative"
+                onMouseEnter={() => setOpenDropdown(item.name)}
+                onMouseLeave={() => setOpenDropdown(null)}
+              >
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-1 text-[0.95rem] font-medium text-black transition-colors hover:text-red"
+                >
+                  {item.name}
+                  <ChevronDown className="h-4 w-4 opacity-60" />
+                </Link>
+
+                {openDropdown === item.name && (
+                  <div className="absolute top-full left-0 pt-2">
+                    <div className="w-48 rounded-[18px] bg-white shadow-[0_15px_40px_rgba(0,0,0,0.08)] py-3 overflow-hidden">
+                      {item.dropdown.map((sub) => (
+                        <Link
+                          key={sub.name}
+                          href={sub.href}
+                          className="block px-5 py-3 text-sm font-medium text-black hover:bg-[#f8f8f8] hover:text-red transition-colors"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-[0.95rem] font-medium text-black transition-colors hover:text-red"
+              >
+                {item.name}
+              </Link>
+            ),
+          )}
           <button
             type="button"
             onClick={() => open()}
@@ -58,9 +107,10 @@ export function Header() {
         </button>
       </nav>
 
+      {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="border-t border-black/5 bg-white lg:hidden">
-          <div className="space-y-2 px-6 py-5">
+          <div className="space-y-1 px-6 py-5">
             {navigation.map((item) => (
               <div key={item.name}>
                 <Link
@@ -70,6 +120,20 @@ export function Header() {
                 >
                   {item.name}
                 </Link>
+                {item.dropdown && (
+                  <div className="ml-4 border-l border-black/10 pl-4 space-y-1">
+                    {item.dropdown.map((sub) => (
+                      <Link
+                        key={sub.name}
+                        href={sub.href}
+                        className="block py-1.5 text-sm text-black/70 hover:text-red transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
 
