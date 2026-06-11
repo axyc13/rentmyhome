@@ -24,7 +24,7 @@ const navigation: NavItem[] = [
     ],
   },
   { name: "Our Services", href: "/services" },
-  { name: "Landlord Hub", href: "/landlords-archive" },
+  { name: "Landlord Hub", href: "/" },
   { name: "Tenant Hub", href: "/tenants" },
   { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/contact" },
