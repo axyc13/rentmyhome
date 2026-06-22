@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useId, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useId, useMemo, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { ArrowRight, CheckCircle2, Upload } from "lucide-react";
 
@@ -105,6 +105,14 @@ function createInitialFormState({
 }
 
 export function Tenancy() {
+  return (
+    <Suspense>
+      <TenancyForm />
+    </Suspense>
+  );
+}
+
+function TenancyForm() {
   const searchParams = useSearchParams();
   const referralManagerSlug = searchParams.get("referralManager") ?? "";
   const referralManager = getPropertyManagerReferral(referralManagerSlug);
