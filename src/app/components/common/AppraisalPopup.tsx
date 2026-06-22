@@ -79,7 +79,7 @@ function FieldSelect({
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full appearance-none rounded-2xl border-2 border-[rgb(238_33_37/0.95)] bg-white px-5 py-5 pr-16 text-lg font-semibold text-black outline-none"
+        className="w-full appearance-none rounded-2xl border-2 border-[rgb(238_33_37/0.95)] bg-white px-4 py-3 pr-14 text-base font-semibold text-black outline-none sm:px-5 sm:py-4"
       >
         <option value="" disabled>
           {label}
@@ -91,7 +91,7 @@ function FieldSelect({
         ))}
       </select>
       <ChevronDown
-        className="pointer-events-none absolute right-5 top-1/2 h-8 w-8 -translate-y-1/2 text-[rgb(238_33_37/0.95)]"
+        className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[rgb(238_33_37/0.95)] sm:right-5 sm:h-7 sm:w-7"
         strokeWidth={3}
       />
     </div>
@@ -115,7 +115,7 @@ function FieldInput({
       value={value}
       onChange={(event) => onChange(event.target.value)}
       placeholder={placeholder}
-      className="w-full rounded-2xl border-2 border-[rgb(238_33_37/0.95)] bg-white px-5 py-5 text-lg font-semibold text-black outline-none placeholder:text-black"
+      className="w-full rounded-2xl border-2 border-[rgb(238_33_37/0.95)] bg-white px-4 py-3 text-base font-semibold text-black outline-none placeholder:text-black sm:px-5 sm:py-4"
       required
     />
   );
@@ -294,7 +294,7 @@ export function AppraisalPopup({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/45 px-4 py-6 backdrop-blur-[2px] lg:items-center lg:py-10"
+      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/45 px-3 py-3 backdrop-blur-[2px] sm:px-4 sm:py-5 lg:items-center lg:py-10"
       onClick={closeAndReset}
       role="dialog"
       aria-modal="true"
@@ -307,23 +307,23 @@ export function AppraisalPopup({
         <button
           type="button"
           onClick={closeAndReset}
-          className="absolute -right-2.5 -top-5.5 z-20 flex h-15 w-15 items-center justify-center rounded-full bg-black text-white shadow-lg transition-transform hover:scale-[1.02] hover:cursor-pointer"
+          className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black text-white shadow-lg transition-transform hover:scale-[1.02] hover:cursor-pointer"
           aria-label="Close appraisal popup"
         >
           <X className="h-5 w-5" strokeWidth={3} />
         </button>
 
         {step === "success" ? (
-          <div className="rounded-[18px] border-2 border-[rgb(238_33_37/0.9)] bg-white px-8 py-12 text-center shadow-[0_24px_80px_rgba(0,0,0,0.18)] sm:px-10 lg:px-12 lg:py-14">
-            <h2 className="mx-auto max-w-4xl text-3xl font-bold tracking-tight text-black sm:text-4xl lg:text-[3rem] lg:leading-[1.08]">
+          <div className="rounded-[18px] border-2 border-[rgb(238_33_37/0.9)] bg-white px-5 py-8 text-center shadow-[0_24px_80px_rgba(0,0,0,0.18)] sm:px-10 sm:py-12 lg:px-12 lg:py-14">
+            <h2 className="mx-auto max-w-4xl text-xl font-bold tracking-tight text-black sm:text-3xl lg:text-[3rem] lg:leading-[1.08]">
               Your Application Submitted Successfully
             </h2>
 
-            <div className="mx-auto mt-10 flex h-34 w-34 items-center justify-center rounded-full border-[5px] border-[rgb(238_33_37/0.95)] text-[color:rgb(238_33_37_/_0.95)]">
-              <Check className="h-16 w-16" strokeWidth={4} />
+            <div className="mx-auto mt-6 flex h-24 w-24 items-center justify-center rounded-full border-[5px] border-[rgb(238_33_37/0.95)] text-[rgb(238_33_37/0.95)] sm:mt-10 sm:h-34 sm:w-34">
+              <Check className="h-10 w-10 sm:h-16 sm:w-16" strokeWidth={4} />
             </div>
 
-            <p className="mx-auto mt-10 max-w-4xl text-xl font-semibold leading-[1.45] text-black sm:text-2xl">
+            <p className="mx-auto mt-6 max-w-4xl text-base font-semibold leading-[1.45] text-black sm:mt-10 sm:text-xl">
               Our team will review it and we will contact you soon with your
               personalized rental appraisal
             </p>
@@ -331,7 +331,7 @@ export function AppraisalPopup({
             <button
               type="button"
               onClick={closeAndReset}
-              className="mt-10 inline-flex min-w-[220px] justify-center rounded-[18px] bg-[rgb(238_33_37/0.98)] px-8 py-4 text-xl font-bold text-white transition-colors hover:cursor-pointer hover:bg-black"
+              className="mt-6 inline-flex w-full justify-center rounded-[18px] bg-[rgb(238_33_37/0.98)] px-8 py-3.5 text-base font-bold text-white transition-colors hover:cursor-pointer hover:bg-black sm:mt-10 sm:w-auto sm:min-w-55 sm:py-4 sm:text-xl"
             >
               Done
             </button>
@@ -370,19 +370,19 @@ export function AppraisalPopup({
               </div>
             </div> */}
 
-            <div className="px-5 py-8 sm:px-8 lg:px-10 lg:py-10">
+            <div className="px-4 py-5 sm:px-7 sm:py-7 lg:px-10 lg:py-9">
               {step === "location" ? (
                 <>
                   <div className="text-center">
-                    <h3 className="text-3xl font-bold tracking-tight text-black sm:text-4xl lg:text-[3rem]">
+                    <h3 className="text-xl font-bold tracking-tight text-black sm:text-3xl lg:text-[3rem]">
                       Let&apos;s start with your property
                     </h3>
-                    <p className="mt-4 text-xl text-black sm:text-2xl">
+                    <p className="mt-2 text-base text-black sm:mt-4 sm:text-xl">
                       Enter the address and location
                     </p>
                   </div>
 
-                  <div className="mx-auto mt-10 max-w-190 space-y-5">
+                  <div className="mx-auto mt-5 max-w-190 space-y-3 sm:mt-8 sm:space-y-5">
                     <FieldInput
                       value={form.address}
                       onChange={(value) => updateField("address", value)}
@@ -397,7 +397,7 @@ export function AppraisalPopup({
                             normalizeSuburb(event.target.value),
                           )
                         }
-                        className="w-full appearance-none rounded-2xl border-2 border-[rgb(238_33_37/0.95)] bg-white px-5 py-5 pr-16 text-lg font-semibold text-black outline-none"
+                        className="w-full appearance-none rounded-2xl border-2 border-[rgb(238_33_37/0.95)] bg-white px-4 py-3 pr-14 text-base font-semibold text-black outline-none sm:px-5 sm:py-4"
                       >
                         <option value="" disabled>
                           Location
@@ -409,7 +409,7 @@ export function AppraisalPopup({
                         ))}
                       </select>
                       <ChevronDown
-                        className="pointer-events-none absolute right-5 top-1/2 h-8 w-8 -translate-y-1/2 text-[rgb(238_33_37/0.95)]"
+                        className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[rgb(238_33_37/0.95)] sm:right-5 sm:h-7 sm:w-7"
                         strokeWidth={3}
                       />
                     </div>
@@ -421,11 +421,11 @@ export function AppraisalPopup({
                     </p>
                   ) : null}
 
-                  <div className="mt-10 flex justify-center">
+                  <div className="mt-5 flex justify-center sm:mt-8">
                     <button
                       type="button"
                       onClick={handleLocationContinue}
-                      className="inline-flex min-w-55 justify-center rounded-[18px] bg-[rgb(238_33_37/0.98)] px-8 py-4 text-xl font-bold text-white transition-colors hover:cursor-pointer hover:bg-black"
+                      className="inline-flex w-full justify-center rounded-[18px] bg-[rgb(238_33_37/0.98)] px-8 py-3.5 text-base font-bold text-white transition-colors hover:cursor-pointer hover:bg-black sm:w-auto sm:min-w-55 sm:py-4 sm:text-xl"
                     >
                       Continue
                     </button>
@@ -434,19 +434,19 @@ export function AppraisalPopup({
               ) : step === "details" ? (
                 <>
                   <div className="text-center">
-                    <h3 className="text-3xl font-bold tracking-tight text-black sm:text-4xl lg:text-[3rem]">
+                    <h3 className="text-xl font-bold tracking-tight text-black sm:text-3xl lg:text-[3rem]">
                       Get your Free
                     </h3>
-                    <p className="mt-2 text-3xl font-bold tracking-tight text-black sm:text-4xl lg:text-[3rem]">
+                    <p className="mt-1 text-xl font-bold tracking-tight text-black sm:mt-2 sm:text-3xl lg:text-[3rem]">
                       <span style={{ color: BRAND_RED }}>Personalized</span>{" "}
                       Rental Appraisal
                     </p>
-                    <p className="mt-4 text-xl text-black sm:text-2xl">
+                    <p className="mt-2 text-base text-black sm:mt-4 sm:text-xl">
                       Fill-up few more details
                     </p>
                   </div>
 
-                  <div className="mt-10 grid gap-5 md:grid-cols-2">
+                  <div className="mt-5 grid gap-3 sm:mt-8 sm:gap-5 md:grid-cols-2">
                     <FieldSelect
                       label="Property Type"
                       value={form.propertyType}
@@ -479,11 +479,11 @@ export function AppraisalPopup({
                     </p>
                   ) : null}
 
-                  <div className="mt-10 flex justify-center">
+                  <div className="mt-5 flex justify-center sm:mt-8">
                     <button
                       type="button"
                       onClick={handleContinue}
-                      className="inline-flex min-w-[220px] justify-center rounded-[18px] bg-[color:rgb(238_33_37_/_0.98)] px-8 py-4 text-xl font-bold text-white transition-colors hover:cursor-pointer hover:bg-black"
+                      className="inline-flex w-full justify-center rounded-[18px] bg-[rgb(238_33_37/0.98)] px-8 py-3.5 text-base font-bold text-white transition-colors hover:cursor-pointer hover:bg-black sm:w-auto sm:min-w-55 sm:py-4 sm:text-xl"
                     >
                       Continue
                     </button>
@@ -492,15 +492,15 @@ export function AppraisalPopup({
               ) : (
                 <>
                   <div className="text-center">
-                    <h3 className="text-3xl font-bold tracking-tight text-black sm:text-4xl lg:text-[3rem]">
+                    <h3 className="text-xl font-bold tracking-tight text-black sm:text-3xl lg:text-[3rem]">
                       Where Should we send it!
                     </h3>
-                    <p className="mt-4 text-xl text-black sm:text-2xl">
+                    <p className="mt-2 text-base text-black sm:mt-4 sm:text-xl">
                       Final Step
                     </p>
                   </div>
 
-                  <div className="mx-auto mt-10 max-w-190 space-y-5">
+                  <div className="mx-auto mt-5 max-w-190 space-y-3 sm:mt-8 sm:space-y-5">
                     <FieldInput
                       value={form.name}
                       onChange={(value) => updateField("name", value)}
@@ -526,12 +526,12 @@ export function AppraisalPopup({
                     </p>
                   ) : null}
 
-                  <div className="mt-10 flex justify-center">
+                  <div className="mt-5 flex justify-center sm:mt-8">
                     <button
                       type="button"
                       onClick={handleSubmit}
                       disabled={loading}
-                      className="inline-flex min-w-[220px] justify-center rounded-[18px] bg-[rgb(238_33_37/0.98)] px-8 py-4 text-xl font-bold text-white transition-colors hover:cursor-pointer hover:bg-black disabled:cursor-not-allowed disabled:opacity-70"
+                      className="inline-flex w-full justify-center rounded-[18px] bg-[rgb(238_33_37/0.98)] px-8 py-3.5 text-base font-bold text-white transition-colors hover:cursor-pointer hover:bg-black disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:min-w-55 sm:py-4 sm:text-xl"
                     >
                       {loading ? "Submitting..." : "Rent My Home"}
                     </button>

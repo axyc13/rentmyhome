@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, useEffect, useId, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, CheckCircle2, Upload } from "lucide-react";
 
 import {
@@ -104,12 +105,26 @@ function createInitialFormState({
 }
 
 export function Tenancy() {
+  const searchParams = useSearchParams();
+  const referralManagerSlug = searchParams.get("referralManager") ?? "";
+  const referralManager = getPropertyManagerReferral(referralManagerSlug);
+
   const [routeContext, setRouteContext] = useState(() => ({
     propertyLocation: "" as TenancyLocation | "",
     referralManagerSlug: "",
     referralManagerName: "",
     submissionPath: "",
   }));
+
+  useEffect(() => {
+    setRouteContext({
+      propertyLocation: getDefaultLocationForPathname(window.location.pathname),
+      referralManagerSlug: referralManager?.slug ?? "",
+      referralManagerName: referralManager?.name ?? "",
+      submissionPath: window.location.pathname,
+    });
+  }, [referralManager?.slug, referralManager?.name]);
+
   const formDefaults = useMemo(
     () => createInitialFormState(routeContext),
     [routeContext],
@@ -119,20 +134,6 @@ export function Tenancy() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    const pathname = window.location.pathname;
-    const searchParams = new URLSearchParams(window.location.search);
-    const referralManagerSlug = searchParams.get("referralManager") ?? "";
-    const referralManager = getPropertyManagerReferral(referralManagerSlug);
-
-    setRouteContext({
-      propertyLocation: getDefaultLocationForPathname(pathname),
-      referralManagerSlug: referralManager?.slug ?? "",
-      referralManagerName: referralManager?.name ?? "",
-      submissionPath: pathname,
-    });
-  }, []);
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -388,16 +389,16 @@ export function Tenancy() {
   return (
     <section
       id="tenancy"
-      className="flex flex-col gap-10 items-center py-20 bg-blue-600"
+      className="bg-[#f8f8f8] py-20"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="space-y-12">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-start">
             <div>
-              <h2 className="text-3xl lg:text-5xl font-serif font-bold text-white mt-3 mb-6">
+              <h2 className="text-3xl lg:text-5xl font-serif font-bold text-black mt-3 mb-6">
                 Apply for Tenancy
               </h2>
-              <p className="max-w-3xl text-white/80 text-lg leading-relaxed">
+              <p className="max-w-3xl text-[#555] text-lg leading-relaxed">
                 Are one of our properties speaking to you? Complete the form
                 below to apply for tenancy. You will receive a confirmation
                 email upon submisson. Our team will review your application
@@ -406,7 +407,7 @@ export function Tenancy() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 lg:p-10 shadow-2xl border-white border">
+          <div className="bg-white rounded-[30px] p-6 lg:p-12 shadow-[0_15px_45px_rgba(0,0,0,0.05)]">
             {submitted ? (
               <div className="text-center">
                 <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
@@ -423,7 +424,7 @@ export function Tenancy() {
                     setSubmitted(false);
                     setMessage("");
                   }}
-                  className="w-full flex flex-row justify-center text-white bg-blue-600 text-lg px-3 py-2 rounded-lg border-2 hover:bg-blue-700 transition-colors hover:cursor-pointer"
+                  className="w-full flex flex-row justify-center text-white bg-[#ef2b2d] text-lg px-3 py-2 rounded-lg border-2 hover:bg-black transition-colors hover:cursor-pointer"
                 >
                   Submit Another Application
                 </button>
@@ -540,7 +541,7 @@ export function Tenancy() {
                       </div>
                       {formData.referralManagerName && (
                         <div className="lg:col-span-12">
-                          <div className="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-900">
+                          <div className="rounded-xl border border-red/10 bg-[#fff8f8] px-4 py-3 text-sm text-[#1a202c]">
                             This application will referred to{" "}
                             <strong>{formData.referralManagerName}</strong>.
                           </div>
@@ -598,7 +599,7 @@ export function Tenancy() {
                                   event.target.checked,
                                 )
                               }
-                              className="mt-1 h-4 w-4 accent-blue-600"
+                              className="mt-1 h-4 w-4 accent-[#ef2b2d]"
                             />
                             <span className="text-sm text-gray-700">
                               Tick this if you are a{" "}
@@ -645,7 +646,7 @@ export function Tenancy() {
 
                     <div className="grid gap-4 xl:grid-cols-3">
                       <div className="rounded-2xl border border-gray-200 p-5 space-y-4">
-                        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-600">
+                        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-red">
                           Reference 1
                         </p>
                         <TextField
@@ -670,7 +671,7 @@ export function Tenancy() {
                       </div>
 
                       <div className="rounded-2xl border border-gray-200 p-5 space-y-4">
-                        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-600">
+                        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-red">
                           Reference 2
                         </p>
                         <TextField
@@ -737,7 +738,7 @@ export function Tenancy() {
                         <button
                           type="button"
                           onClick={handleAddApplicant}
-                          className="rounded-lg border border-blue-600 px-4 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 hover:cursor-pointer"
+                          className="rounded-lg border border-red px-4 py-2 text-sm font-medium text-red transition-colors hover:bg-[#fff8f8] hover:cursor-pointer"
                         >
                           Add{" "}
                           {formData.secondApplicantEnabled ? "third" : "second"}{" "}
@@ -842,7 +843,7 @@ export function Tenancy() {
                         />
                       </div>
 
-                      <div className="rounded-xl border border-blue-100 bg-blue-50 p-5 text-sm leading-7 text-gray-700">
+                      <div className="rounded-xl border border-red/10 bg-[#fff8f8] p-5 text-sm leading-7 text-gray-700">
                         <p>
                           I authorise the Landlord/Property Manager to collect,
                           retain and use this information for the purpose of
@@ -877,7 +878,7 @@ export function Tenancy() {
                               event.target.checked,
                             )
                           }
-                          className="mt-1 h-4 w-4 accent-blue-600"
+                          className="mt-1 h-4 w-4 accent-[#ef2b2d]"
                         />
                         <span className="text-sm text-gray-700">
                           I confirm the information provided is correct and I
@@ -897,7 +898,7 @@ export function Tenancy() {
                       <button
                         type="button"
                         onClick={handleSubmit}
-                        className="flex-1 flex flex-row justify-center text-white bg-blue-600 text-lg group px-3 py-3 rounded-lg border-2 gap-1 hover:bg-blue-700 transition-colors hover:cursor-pointer disabled:opacity-50"
+                        className="flex-1 flex flex-row justify-center text-white bg-[#ef2b2d] text-lg group px-3 py-3 rounded-lg border-2 gap-1 hover:bg-black transition-colors hover:cursor-pointer disabled:opacity-50"
                         disabled={loading}
                       >
                         <span>
@@ -950,7 +951,7 @@ function StepActions({
       )}
       <button
         type="button"
-        className="flex-1 flex flex-row justify-center text-white bg-blue-600 text-lg group px-3 py-3 rounded-lg border-2 gap-1 hover:bg-blue-700 transition-colors hover:cursor-pointer"
+        className="flex-1 flex flex-row justify-center text-white bg-[#ef2b2d] text-lg group px-3 py-3 rounded-lg border-2 gap-1 hover:bg-black transition-colors hover:cursor-pointer"
         onClick={onNext}
       >
         <span>Continue</span>
@@ -972,7 +973,7 @@ function StepHeader({
   return (
     <div className="grid gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
       <div>
-        <p className="text-sm font-medium uppercase tracking-[0.16em] text-blue-600">
+        <p className="text-sm font-medium uppercase tracking-[0.16em] text-red">
           Step {step} of 4
         </p>
         <h3 className="mt-2 text-xl font-semibold text-black">{title}</h3>
@@ -985,7 +986,7 @@ function StepHeader({
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors shrink-0 ${
                 step >= currentStep
-                  ? "bg-blue-600 text-white"
+                  ? "bg-[#ef2b2d] text-white"
                   : "bg-gray-200 text-black"
               }`}
             >
@@ -993,7 +994,7 @@ function StepHeader({
             </div>
             {currentStep < 4 && (
               <div
-                className={`w-10 h-0.5 shrink-0 ${step > currentStep ? "bg-blue-600" : "bg-black/20"}`}
+                className={`w-10 h-0.5 shrink-0 ${step > currentStep ? "bg-[#ef2b2d]" : "bg-black/20"}`}
               />
             )}
           </div>
@@ -1035,7 +1036,7 @@ function TextField({
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-400"
+        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red/20 disabled:bg-gray-100 disabled:text-gray-400"
       />
     </div>
   );
@@ -1068,7 +1069,7 @@ function TextAreaField({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red/20"
       />
     </div>
   );
@@ -1099,7 +1100,7 @@ function SelectField({
         id={id}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full rounded-lg border border-gray-300 px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-red/20"
       >
         {options.map((option) => (
           <option key={option} value={option}>
@@ -1140,9 +1141,9 @@ function UploadField({
       </label>
       <label
         htmlFor={id}
-        className="flex min-h-29 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 px-4 py-5 text-center transition-colors hover:border-blue-500"
+        className="flex min-h-29 cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 px-4 py-5 text-center transition-colors hover:border-red"
       >
-        <Upload className="mb-3 h-6 w-6 text-blue-600" />
+        <Upload className="mb-3 h-6 w-6 text-red" />
         <span className="text-sm font-medium text-black">
           {file ? file.name : "Click to upload"}
         </span>
@@ -1183,8 +1184,8 @@ function LocationField({
               htmlFor={id}
               className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition-colors ${
                 checked
-                  ? "border-blue-600 bg-blue-50"
-                  : "border-gray-200 bg-white hover:border-blue-300"
+                  ? "border-red bg-[#fff8f8]"
+                  : "border-gray-200 bg-white hover:border-red/30"
               }`}
             >
               <input
@@ -1193,7 +1194,7 @@ function LocationField({
                 name="propertyLocation"
                 checked={checked}
                 onChange={() => onChange(location)}
-                className="mt-1 h-4 w-4 accent-blue-600"
+                className="mt-1 h-4 w-4 accent-[#ef2b2d]"
               />
               <span>
                 <span className="block font-medium text-black">{location}</span>

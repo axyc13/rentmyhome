@@ -5,6 +5,7 @@ import TenantHero from "@/src/app/components/tenants/TenantHero";
 import TenantFormSection from "@/src/app/components/tenants/TenantFormSection";
 import LegalCTA from "@/src/app/components/legal/LegalCTA";
 import { Tenancy } from "@/src/app/components/common/Tenancy";
+import PropertyManagers from "@/src/app/components/team/PropertyManagers";
 
 export const metadata: Metadata = {
   title: "Tenant Hub | Rent My Home",
@@ -18,6 +19,7 @@ export default function Tenants() {
       <Header />
       <TenantHero />
       <TenantFormSection />
+      <PropertyManagers />
       <Tenancy />
       <LegalCTA
         title="Need Help Finding A Rental?"
