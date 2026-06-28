@@ -69,7 +69,7 @@ export function Footer() {
                   className="flex items-center gap-3 transition-colors hover:text-white"
                 >
                   <Phone className="h-4 w-4" />
-                  +64 22 453 0098
+                  +64 22 543 4533
                 </a>
               </li>
               <li>
@@ -88,10 +88,16 @@ export function Footer() {
 
         <div className="mt-14 border-t border-white/10 pt-6 text-center text-sm text-white/45">
           <div className="flex justify-center gap-6 mb-3">
-            <Link href="/privacy" className="hover:text-white/75 transition-colors">
+            <Link
+              href="/privacy"
+              className="hover:text-white/75 transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-white/75 transition-colors">
+            <Link
+              href="/terms"
+              className="hover:text-white/75 transition-colors"
+            >
               Terms of Use
             </Link>
             <Link href="/faq" className="hover:text-white/75 transition-colors">
